@@ -2,6 +2,7 @@
 package com.mycompany.pruebaconmaeven.logica;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,17 +23,20 @@ public class Usuario implements Serializable {
     private String telefono;
     @Column(insertable = false)// @Column(insertable = false) -> indica que la base de datos asigne su valor
     private int estado;
+    
+    private List<Prestamo> prestamoList;
 
     public Usuario() {
     }
 
-    public Usuario(String dni, String nombre, String ape_paterno, String ape_materno, String email, String telefono) {
+    public Usuario(String dni, String nombre, String ape_paterno, String ape_materno, String email, String telefono, List<Prestamo> prestamoList) {
         this.dni = dni;
         this.nombre = nombre;
         this.ape_paterno = ape_paterno;
         this.ape_materno = ape_materno;
         this.email = email;
         this.telefono = telefono;
+        this.prestamoList = prestamoList;
     }
     
     //Getters setters
@@ -44,6 +48,7 @@ public class Usuario implements Serializable {
     public String getEmail() {return email;}
     public String getTelefono() {return telefono;}
     public int getEstado() {return estado;}
+    public List<Prestamo> getPrestamoList() {return prestamoList;}
     
     //setters
     public void setId_usuario(int id_usuario) { this.id_usuario = id_usuario;}
@@ -54,12 +59,14 @@ public class Usuario implements Serializable {
     public void setEmail(String email) {this.email = email;}
     public void setTelefono(String telefono) {this.telefono = telefono;}
     public void setEstado(int estado) {this.estado = estado;}
+    public void setPrestamoList(List<Prestamo> prestamoList) {this.prestamoList = prestamoList;}
+    
     
     @Override
     public String toString(){
         
         return String.format(
-             "id_usuario:%d %n dni:%s %n nombre:%s %n ape_paterno:%s %n ape_materno:%s %n email:%s %n telefono:%s %n estado:%d%n",
+             "id_usuario:%d %n dni:%s %n nombre:%s %n ape_paterno:%s %n ape_materno:%s %n email:%s %n telefono:%s %n estado:%d%n Prestamos:%d",
              getId_usuario(),
              getDni(),
              getNombre(),
@@ -67,7 +74,8 @@ public class Usuario implements Serializable {
              getApe_materno(),
              getEmail(),
              getTelefono(),
-             getEstado()
+             getEstado(),
+             getPrestamoList().size()
         );
     }
     
