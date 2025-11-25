@@ -31,12 +31,7 @@ public class ControladoraLogica {
     }
     
     /////////////////////////////////////////////////////////   Libro   ////////////////////////////////////////////////////////////////////////////
-    
-    public void crearLibro(Libro libro){
-        controlPersis.crearLibro(libro);
-    }
-    
-    /*
+
     public void crearLibroYEjemplares(Libro libro, int cantidad){
         controlPersis.crearLibro(libro);
         
@@ -46,8 +41,6 @@ public class ControladoraLogica {
         }
         
     }
-
-    */
     
     public void eliminarLibro(int id){
         controlPersis.eliminarLibro(id);
@@ -68,12 +61,9 @@ public class ControladoraLogica {
     
     //////////////////////////////////////////////////////////      Ejemplar    ////////////////////////////////////////////////////////////////////////////
     
-    public void crearEjemplar(Ejemplar ejemplar, int cantidad){
-        
-        for (int i = 1;i <= cantidad; i++){           //int cantidad -> # de ejemplares del libro
-            controlPersis.crearEjemplar(ejemplar);  // el for (); genera los registros necesarios del libro
-        }                                           // Ej: si el libro "Los viajes de gulliver" tiene 20 unidades disponibles,
-                                                    // habrán 20 registros de ese libro en la tabla Ejemplar
+    public void crearEjemplar(Ejemplar ejemplar){
+        controlPersis.crearEjemplar(ejemplar);
+                                                        
     }
     
     public void eliminarEjemplar(int id){
