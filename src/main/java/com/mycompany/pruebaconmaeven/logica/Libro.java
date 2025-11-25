@@ -3,7 +3,6 @@ package com.mycompany.pruebaconmaeven.logica;
 
 import java.io.Serializable;
 import java.util.LinkedList;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -67,14 +66,15 @@ public class Libro implements Serializable {
     @Override
     public String toString(){
         return String.format(
-            "id_libro:%d %n codigo_libro:%d %n titulo:%s %n autor:%s %n anno_publicacion:%d %n nro_paginas:%d %n estado:%d ",
+            "id_libro:%d %n codigo_libro:%d %n titulo:%s %n autor:%s %n anno_publicacion:%d %n nro_paginas:%d %n estado:%d%n Ejemplares:%d%n",
             getId_libro(),
             getCodigo_libro(),
             getTitulo(),
             getAutor(),
             getAnno_publicacion(),
             getNro_paginas(),
-            getEstado()
+            getEstado(),
+            getEjemplareslist().size()
         );
     }
     
