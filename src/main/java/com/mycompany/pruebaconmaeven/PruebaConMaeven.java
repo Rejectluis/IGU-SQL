@@ -31,7 +31,7 @@ public class PruebaConMaeven {
         
         //Crear un usuario
         List<Prestamo> prestamosList = new LinkedList<Prestamo>();
-        Usuario usuario = new Usuario("81685005","Luis Fernando","Lopez Torres","Reyes", "luisfernandolopeztorresr@gmil.com", "953073099", prestamosList);
+        Usuario usuario = new Usuario("44444444","Angel Amenadiel","Saragoza","Narvaes", "pruebadejemplo@gmil.com", "555555555", prestamosList);
         
         //Cargar usuario a la BD
         control.crearUsuario(usuario);
