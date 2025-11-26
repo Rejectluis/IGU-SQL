@@ -4,7 +4,7 @@
  */
 package com.mycompany.pruebaconmaeven.persistencia;
 
-import com.mycompany.pruebaconmaeven.logica.Usuario;
+import com.mycompany.pruebaconmaeven.logica.Prestamo;
 import com.mycompany.pruebaconmaeven.persistencia.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
@@ -20,13 +20,13 @@ import javax.persistence.criteria.Root;
  *
  * @author luisf
  */
-public class UsuarioJpaController implements Serializable {
+public class PrestamoJpaController implements Serializable {
 
-    public UsuarioJpaController(EntityManagerFactory emf) {
+    public PrestamoJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     
-    public UsuarioJpaController() {
+    public PrestamoJpaController() {
         emf = Persistence.createEntityManagerFactory("PruebaPU");
     }
     
@@ -36,12 +36,12 @@ public class UsuarioJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Usuario usuario) {
+    public void create(Prestamo prestamo) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(usuario);
+            em.persist(prestamo);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -50,19 +50,19 @@ public class UsuarioJpaController implements Serializable {
         }
     }
 
-    public void edit(Usuario usuario) throws NonexistentEntityException, Exception {
+    public void edit(Prestamo prestamo) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            usuario = em.merge(usuario);
+            prestamo = em.merge(prestamo);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                int id = usuario.getId_usuario();
-                if (findUsuario(id) == null) {
-                    throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.");
+                int id = prestamo.getId_prestamo();
+                if (findPrestamo(id) == null) {
+                    throw new NonexistentEntityException("The prestamo with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -78,14 +78,14 @@ public class UsuarioJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Usuario usuario;
+            Prestamo prestamo;
             try {
-                usuario = em.getReference(Usuario.class, id);
-                usuario.getId_usuario();
+                prestamo = em.getReference(Prestamo.class, id);
+                prestamo.getId_prestamo();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The prestamo with id " + id + " no longer exists.", enfe);
             }
-            em.remove(usuario);
+            em.remove(prestamo);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -94,19 +94,19 @@ public class UsuarioJpaController implements Serializable {
         }
     }
 
-    public List<Usuario> findUsuarioEntities() {
-        return findUsuarioEntities(true, -1, -1);
+    public List<Prestamo> findPrestamoEntities() {
+        return findPrestamoEntities(true, -1, -1);
     }
 
-    public List<Usuario> findUsuarioEntities(int maxResults, int firstResult) {
-        return findUsuarioEntities(false, maxResults, firstResult);
+    public List<Prestamo> findPrestamoEntities(int maxResults, int firstResult) {
+        return findPrestamoEntities(false, maxResults, firstResult);
     }
 
-    private List<Usuario> findUsuarioEntities(boolean all, int maxResults, int firstResult) {
+    private List<Prestamo> findPrestamoEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Usuario.class));
+            cq.select(cq.from(Prestamo.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -118,20 +118,20 @@ public class UsuarioJpaController implements Serializable {
         }
     }
 
-    public Usuario findUsuario(int id) {
+    public Prestamo findPrestamo(int id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Usuario.class, id);
+            return em.find(Prestamo.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getUsuarioCount() {
+    public int getPrestamoCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Usuario> rt = cq.from(Usuario.class);
+            Root<Prestamo> rt = cq.from(Prestamo.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

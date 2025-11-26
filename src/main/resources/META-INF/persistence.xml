@@ -5,6 +5,7 @@
     <class>com.mycompany.pruebaconmaeven.logica.Usuario</class>
     <class>com.mycompany.pruebaconmaeven.logica.Ejemplar</class>
     <class>com.mycompany.pruebaconmaeven.logica.Libro</class>
+    <class>com.mycompany.pruebaconmaeven.logica.Prestamo</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=Biblioteca;encrypt=false"/>
       <property name="javax.persistence.jdbc.user" value="usersql"/>
