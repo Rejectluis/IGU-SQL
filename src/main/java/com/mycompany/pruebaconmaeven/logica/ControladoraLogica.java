@@ -80,7 +80,7 @@ public class ControladoraLogica {
         return controlPersis.traerEjemplar(id);
     }
     
-    public LinkedList<Ejemplar> traerListaEjemplares(){
+    public ArrayList<Ejemplar> traerListaEjemplares(){
         return controlPersis.traerListaEjemplares();
     }
     

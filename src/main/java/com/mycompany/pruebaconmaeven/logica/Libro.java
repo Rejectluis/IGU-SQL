@@ -2,7 +2,8 @@
 package com.mycompany.pruebaconmaeven.logica;
 
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,19 +28,19 @@ public class Libro implements Serializable {
     private int estado;
     
     @OneToMany(mappedBy = "libro")
-    private LinkedList<Ejemplar> ejemplaresList;
+    private List<Ejemplar> ejemplaresList;
    
 
     public Libro() {
     }
 
-    public Libro(int codigo_libro, String titulo, String autor, int anno_publicacion, int nro_paginas,LinkedList<Ejemplar> ejemplareslist) {
+    public Libro(int codigo_libro, String titulo, String autor, int anno_publicacion, int nro_paginas) {
         this.codigo_libro = codigo_libro;
         this.titulo = titulo;
         this.autor = autor;
         this.anno_publicacion = anno_publicacion;
         this.nro_paginas = nro_paginas;
-        this.ejemplaresList = ejemplareslist;
+        this.ejemplaresList = new ArrayList<Ejemplar>();
     }
     
     //Getters
@@ -50,7 +51,7 @@ public class Libro implements Serializable {
     public int getAnno_publicacion() {return anno_publicacion;}
     public int getNro_paginas() {return nro_paginas;}
     public int getEstado() {return estado;}
-    public LinkedList<Ejemplar> getEjemplareslist() {return ejemplaresList;}
+    public List<Ejemplar> getEjemplareslist() {return ejemplaresList;}
     
     //Setters
     public void setId_libro(int id_libro) {this.id_libro = id_libro;}
@@ -60,7 +61,7 @@ public class Libro implements Serializable {
     public void setAnno_publicacion(int anno_publicacion) {this.anno_publicacion = anno_publicacion;}
     public void setNro_paginas(int nro_paginas) {this.nro_paginas = nro_paginas;}
     public void setEstado(int estado) {this.estado = estado;}
-    public void setEjemplareslist(LinkedList<Ejemplar> ejemplareslist) {this.ejemplaresList = ejemplareslist;}
+    public void setEjemplareslist(List<Ejemplar> ejemplareslist) {this.ejemplaresList = ejemplareslist;}
     
     
     @Override

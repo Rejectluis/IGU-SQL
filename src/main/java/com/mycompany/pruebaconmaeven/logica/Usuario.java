@@ -33,16 +33,6 @@ public class Usuario implements Serializable {
     public Usuario() {
     }
     
-    public Usuario(String dni, String nombre, String ape_paterno, String ape_materno, String email, String telefono, List<Prestamo> prestamoList) {
-        this.dni = dni;
-        this.nombre = nombre;
-        this.ape_paterno = ape_paterno;
-        this.ape_materno = ape_materno;
-        this.email = email;
-        this.telefono = telefono;
-        this.prestamoList = prestamoList;
-    }
-    
     public Usuario(String dni, String nombre, String ape_paterno, String ape_materno, String email, String telefono) {
         this.dni = dni;
         this.nombre = nombre;
@@ -50,7 +40,7 @@ public class Usuario implements Serializable {
         this.ape_materno = ape_materno;
         this.email = email;
         this.telefono = telefono;
-        this.prestamoList = new LinkedList<Prestamo>();
+        this.prestamoList = new ArrayList<Prestamo>();
     }
     
     //Getters 
