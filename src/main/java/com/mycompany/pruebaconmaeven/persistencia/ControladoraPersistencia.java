@@ -3,6 +3,7 @@ package com.mycompany.pruebaconmaeven.persistencia;
 
 import com.mycompany.pruebaconmaeven.logica.Ejemplar;
 import com.mycompany.pruebaconmaeven.logica.Libro;
+import com.mycompany.pruebaconmaeven.logica.Prestamo;
 import com.mycompany.pruebaconmaeven.logica.Usuario;
 import com.mycompany.pruebaconmaeven.persistencia.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class ControladoraPersistencia {
     UsuarioJpaController controller1 = new UsuarioJpaController();
     LibroJpaController controller2 = new LibroJpaController();
     EjemplarJpaController controller3 = new EjemplarJpaController();
+    PrestamoJpaController controller4 = new PrestamoJpaController();
     
     //----------------------------------------------------------------   Usuarios    ------------------------------------------------------
     public void crearUsuario(Usuario user) {
@@ -115,10 +117,47 @@ public class ControladoraPersistencia {
         
         return ejemList;
     }
+    //----------------------------------------------------------------    Prestamo    -------------------------------------------------
 
+    public void crearPrestamo(Prestamo prestamo) {
+        controller4.create(prestamo);
+    }
+
+    public void eliminarPrestamo(int id) {
+        try {
+            controller4.destroy(id);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void editarPrestamo(Prestamo prestamo) {
+        try {
+            controller4.edit(prestamo);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public Prestamo traerPrestamo(int id) {
+        return controller4.findPrestamo(id);
+    }
+
+    public List<Prestamo> traerListaPrestamos() {
+        
+        return controller4.findPrestamoEntities();
+    }
+
+
+
+
+
+  
 
     
-
-
+    
+    
+    
+    
     
 }

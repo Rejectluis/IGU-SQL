@@ -2,6 +2,8 @@
 package com.mycompany.pruebaconmaeven.logica;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -25,14 +28,17 @@ public class Ejemplar implements Serializable {
     private Libro libro;
     @Column(insertable = false)
     private int estado;
+    
+    @OneToMany(mappedBy = "ejemplar")
+    private List<Prestamo> prestamoList;
 
     public Ejemplar() {
     }
 
     public Ejemplar(Libro libro) {
         this.libro = libro;
+        this.prestamoList = new ArrayList<Prestamo>();
     }
-
     
     //  Getters
     public int getId_ejemplar() {return id_ejemplar;}

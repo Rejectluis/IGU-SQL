@@ -2,12 +2,15 @@
 package com.mycompany.pruebaconmaeven.logica;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Usuario implements Serializable {
@@ -24,11 +27,12 @@ public class Usuario implements Serializable {
     @Column(insertable = false)// @Column(insertable = false) -> indica que la base de datos asigne su valor
     private int estado;
     
-    private List<Prestamo> prestamoList;
+    @OneToMany(mappedBy = "usuario")
+    private List<Prestamo> prestamoList;    //historial de prestamos
 
     public Usuario() {
     }
-
+    
     public Usuario(String dni, String nombre, String ape_paterno, String ape_materno, String email, String telefono, List<Prestamo> prestamoList) {
         this.dni = dni;
         this.nombre = nombre;
@@ -39,7 +43,17 @@ public class Usuario implements Serializable {
         this.prestamoList = prestamoList;
     }
     
-    //Getters setters
+    public Usuario(String dni, String nombre, String ape_paterno, String ape_materno, String email, String telefono) {
+        this.dni = dni;
+        this.nombre = nombre;
+        this.ape_paterno = ape_paterno;
+        this.ape_materno = ape_materno;
+        this.email = email;
+        this.telefono = telefono;
+        this.prestamoList = new LinkedList<Prestamo>();
+    }
+    
+    //Getters 
     public int getId_usuario() {return id_usuario;}
     public String getDni() {return dni;}
     public String getNombre() {return nombre;}

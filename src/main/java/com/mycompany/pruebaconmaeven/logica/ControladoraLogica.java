@@ -4,6 +4,7 @@ package com.mycompany.pruebaconmaeven.logica;
 import com.mycompany.pruebaconmaeven.persistencia.ControladoraPersistencia;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class ControladoraLogica {
     ControladoraPersistencia controlPersis = new ControladoraPersistencia();
@@ -83,5 +84,27 @@ public class ControladoraLogica {
         return controlPersis.traerListaEjemplares();
     }
     
+    //////////////////////////////////////////////////////////      Prestamo    ////////////////////////////////////////////////////////////////////////////
     
+    public void crearPrestamo(Prestamo prestamo){
+        controlPersis.crearPrestamo(prestamo);
+    }
+    
+    public void eliminarPrestamo(int id){     
+        controlPersis.eliminarPrestamo(id); 
+    }                                      
+    
+    public void editarPrestamo(Prestamo prestamo){
+        controlPersis.editarPrestamo(prestamo);
+    }
+    
+    public Prestamo traerPrestamo(int id){
+        
+        return controlPersis.traerPrestamo(id);
+    }
+    
+    public List<Prestamo> traerListaPrestamos(){
+        return controlPersis.traerListaPrestamos();
+    }
+
 }
