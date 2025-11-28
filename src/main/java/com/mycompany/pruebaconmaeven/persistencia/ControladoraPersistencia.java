@@ -7,7 +7,6 @@ import com.mycompany.pruebaconmaeven.logica.Prestamo;
 import com.mycompany.pruebaconmaeven.logica.Usuario;
 import com.mycompany.pruebaconmaeven.persistencia.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -110,10 +109,10 @@ public class ControladoraPersistencia {
         return controller3.findEjemplar(id);
     }
 
-    public LinkedList<Ejemplar> traerListaEjemplares() {
+    public ArrayList<Ejemplar> traerListaEjemplares() {
         
         List<Ejemplar> listaEjemplar = controller3.findEjemplarEntities();
-        LinkedList<Ejemplar> ejemList = new LinkedList<Ejemplar>(listaEjemplar);
+        ArrayList<Ejemplar> ejemList = new ArrayList<Ejemplar>(listaEjemplar);
         
         return ejemList;
     }
@@ -147,17 +146,5 @@ public class ControladoraPersistencia {
         
         return controller4.findPrestamoEntities();
     }
-
-
-
-
-
-  
-
-    
-    
-    
-    
-    
-    
+ 
 }
