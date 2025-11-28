@@ -146,17 +146,5 @@ public class ControladoraPersistencia {
         
         return controller4.findPrestamoEntities();
     }
-
-
-
-
-
-  
-
-    
-    
-    
-    
-    
-    
+ 
 }

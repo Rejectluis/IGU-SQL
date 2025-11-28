@@ -1,22 +1,21 @@
 
 package com.mycompany.pruebaconmaeven;
 
+
+import com.mycompany.pruebaconmaeven.igu.Principal;
 import com.mycompany.pruebaconmaeven.logica.ControladoraLogica;
-import com.mycompany.pruebaconmaeven.logica.Ejemplar;
 import com.mycompany.pruebaconmaeven.logica.Libro;
 import com.mycompany.pruebaconmaeven.logica.Prestamo;
 import com.mycompany.pruebaconmaeven.logica.Usuario;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+
 
 public class PruebaConMaeven {
 
     public static void main(String[] args) {
         ControladoraLogica control = new ControladoraLogica();
 
-        
+        /*
         //Crear el libro
         Libro libro = new Libro(102, "Cien años de soledad", "Gabriel GM", 1977, 376);
         
@@ -24,7 +23,6 @@ public class PruebaConMaeven {
         control.crearLibroYEjemplares(libro, 6);
         
         //Crear un usuario
-        List<Prestamo> prestamosList = new LinkedList<Prestamo>();
         Usuario usuario = new Usuario("44444444","Angel Amenadiel","Saragoza","Narvaes", "pruebadejemplo@gmil.com", "555555555");
         
         //Cargar usuario a la BD
@@ -44,10 +42,11 @@ public class PruebaConMaeven {
         
         //Se edita el prestamo con la fecha de devolución y el estado inactivo 
         control.editarPrestamo(press);
+        */
         
-        
-
-        
+        Principal ventana = new Principal();
+        ventana.setVisible(true);
+        ventana.setLocationRelativeTo(null);
 
         
     }
