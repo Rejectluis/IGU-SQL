@@ -1,15 +1,15 @@
 
 package com.mycompany.pruebaconmaeven.igu;
 
-import com.mycompany.pruebaconmaeven.Interfaces.IPantalla;
+import com.mycompany.pruebaconmaeven.Interfaces.IResetear;
+import com.mycompany.pruebaconmaeven.Interfaces.IRetornar;
 import com.mycompany.pruebaconmaeven.logica.ControladoraLogica;
 import com.mycompany.pruebaconmaeven.logica.Libro;
 import javax.swing.JFrame;
+import com.mycompany.pruebaconmaeven.Interfaces.IMostrar;
 
-import javax.swing.JTable;
 
-
-public class A_ModificarDatos extends javax.swing.JFrame implements IPantalla {
+public class A_ModificarDatos extends javax.swing.JFrame implements IMostrar,IResetear,IRetornar {
     
     ControladoraLogica controller = new ControladoraLogica();
     int idLibro;
@@ -262,7 +262,6 @@ public class A_ModificarDatos extends javax.swing.JFrame implements IPantalla {
         String ejemplares = txtEjemplares.getText();
         
         controller.guardarModificacion(libro, autor, codigoLibro, ejemplares, paginas, publicacion, titulo);
-        controller.modificarEjemplares(libro, txtEjemplares.getText());
         
         A_ColeccionLibro pantalla = new A_ColeccionLibro();
         mostrarYCentrarPantalla(pantalla);
@@ -309,15 +308,7 @@ public class A_ModificarDatos extends javax.swing.JFrame implements IPantalla {
         dispose();
     }
 
-    @Override
-    public void cargartTabla(JTable tablaLibro) {
 
-        
-    }
-
-    @Override
-    public void EliminarRegistroYRecargarPantalla() {
-    }
     
     //-------------------------------------------------------------------------------------------------------------------------------------------------------  
     

@@ -1,13 +1,14 @@
 
-package com.mycompany.pruebaconmaeven.igu;
+package com.mycompany.pruebaconmaeven.igu.Usuario;
 
+import com.mycompany.pruebaconmaeven.igu.*;
 import com.mycompany.pruebaconmaeven.Interfaces.IRetornar;
 import com.mycompany.pruebaconmaeven.Interfaces.IMostrar;
 
-public class A_GestionLibros extends javax.swing.JFrame implements IMostrar, IRetornar{
+public class GestionUsuario extends javax.swing.JFrame implements IMostrar, IRetornar{
 
 
-    public A_GestionLibros() {
+    public GestionUsuario() {
         initComponents();
     }
 
@@ -18,28 +19,28 @@ public class A_GestionLibros extends javax.swing.JFrame implements IMostrar, IRe
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        btnNuevoLibro = new javax.swing.JButton();
-        btnColeccionLibros = new javax.swing.JButton();
+        btnNuevoUsuario = new javax.swing.JButton();
+        btnColeccionUsuarios = new javax.swing.JButton();
         btnRegresarMenu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Californian FB", 0, 36)); // NOI18N
-        jLabel1.setText("Gestión de libros");
+        jLabel1.setText("Gestión de usuarios");
 
-        btnNuevoLibro.setFont(new java.awt.Font("Gadugi", 0, 18)); // NOI18N
-        btnNuevoLibro.setText("Nuevo libro");
-        btnNuevoLibro.addActionListener(new java.awt.event.ActionListener() {
+        btnNuevoUsuario.setFont(new java.awt.Font("Gadugi", 0, 18)); // NOI18N
+        btnNuevoUsuario.setText("Nuevo usuario");
+        btnNuevoUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNuevoLibroActionPerformed(evt);
+                btnNuevoUsuarioActionPerformed(evt);
             }
         });
 
-        btnColeccionLibros.setFont(new java.awt.Font("Gadugi", 0, 18)); // NOI18N
-        btnColeccionLibros.setText("Coleccion");
-        btnColeccionLibros.addActionListener(new java.awt.event.ActionListener() {
+        btnColeccionUsuarios.setFont(new java.awt.Font("Gadugi", 0, 18)); // NOI18N
+        btnColeccionUsuarios.setText("Coleccion");
+        btnColeccionUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnColeccionLibrosActionPerformed(evt);
+                btnColeccionUsuariosActionPerformed(evt);
             }
         });
 
@@ -59,17 +60,17 @@ public class A_GestionLibros extends javax.swing.JFrame implements IMostrar, IRe
                 .addContainerGap(35, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnRegresarMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnColeccionLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnNuevoLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnColeccionUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNuevoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addComponent(btnNuevoLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnNuevoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnColeccionLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnColeccionUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnRegresarMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(189, Short.MAX_VALUE))
@@ -80,11 +81,11 @@ public class A_GestionLibros extends javax.swing.JFrame implements IMostrar, IRe
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(191, 191, 191)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addGap(209, 209, 209)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(149, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,32 +111,32 @@ public class A_GestionLibros extends javax.swing.JFrame implements IMostrar, IRe
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnNuevoLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoLibroActionPerformed
-        A_NuevoLibro lb = new A_NuevoLibro();
+    private void btnNuevoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoUsuarioActionPerformed
+        NuevoUsuario lb = new NuevoUsuario();
         mostrarYCentrarPantalla(lb);
         
-    }//GEN-LAST:event_btnNuevoLibroActionPerformed
+    }//GEN-LAST:event_btnNuevoUsuarioActionPerformed
 
     private void btnRegresarMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarMenuActionPerformed
         regresar();
     }//GEN-LAST:event_btnRegresarMenuActionPerformed
 
-    private void btnColeccionLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColeccionLibrosActionPerformed
+    private void btnColeccionUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColeccionUsuariosActionPerformed
         A_ColeccionLibro colec = new A_ColeccionLibro();
         mostrarYCentrarPantalla(colec);
         
-    }//GEN-LAST:event_btnColeccionLibrosActionPerformed
+    }//GEN-LAST:event_btnColeccionUsuariosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnColeccionLibros;
-    private javax.swing.JButton btnNuevoLibro;
+    private javax.swing.JButton btnColeccionUsuarios;
+    private javax.swing.JButton btnNuevoUsuario;
     private javax.swing.JButton btnRegresarMenu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
-    
+
     //----------------------------------------------------------------  Interfaz IPantalla  ----------------------------------------------------------------  
 
     @Override
@@ -149,7 +150,6 @@ public class A_GestionLibros extends javax.swing.JFrame implements IMostrar, IRe
     public void regresar() {
         dispose();
     }
-    //-------------------------------------------------------------------------------------------------------------------------------------------------------  
-
-
+    
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------
 }

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.eclipse.persistence.exceptions.ValidationException;
 
 public class ControladoraPersistencia {
     UsuarioJpaController controller1 = new UsuarioJpaController();
@@ -69,6 +70,9 @@ public class ControladoraPersistencia {
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        
+        
     }
 
     public Libro traerLibro(int id) {
@@ -131,6 +135,15 @@ public class ControladoraPersistencia {
         return controller3.findEjemplaresByLibro(idLibro);
     }
     
+    public void modificarEjemplar(Libro libro, String ejemplares){
+        try {
+            controller3.modificarEjemplaresP(libro, ejemplares);
+        } catch (ValidationException ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     //----------------------------------------------------------------    Prestamo    -------------------------------------------------
 

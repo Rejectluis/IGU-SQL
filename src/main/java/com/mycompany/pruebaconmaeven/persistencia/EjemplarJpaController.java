@@ -13,12 +13,29 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import org.eclipse.persistence.exceptions.ValidationException;
 
 /**
  *
  * @author luisf
  */
 public class EjemplarJpaController implements Serializable {
+    
+    public void showInformativeMessage(String message, String type, String title){
+        JOptionPane opti = new JOptionPane(message);
+        
+        if(type.equals("Error")){
+            opti.setMessageType(JOptionPane.ERROR_MESSAGE);
+        }else if (type.equals("Info")){
+            opti.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        JDialog dialog = opti.createDialog(title);
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
+    }
 
     public EjemplarJpaController(EntityManagerFactory emf) {
         this.emf = emf;
@@ -174,6 +191,42 @@ public class EjemplarJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+    
+    /*
+     *   diferencia = 5 - 10 -> diferencia = -5 -> significa que a los ejemplares en la bd hay que restarles 5. Es decir, eliminar 5 ejemplares
+     *    diferencia = 9 - 3 -> diferencia = 6 -> significa que a los ejemplares de la bd hay que sumarle 6.
+     *    diferencia = 2 - 2 -> diferencia = 0 -> no pueden haber 0 ejemplares de un libro
+     */
+    public void modificarEjemplaresP(Libro libro, String nuevaCantidadEjemplar)throws ValidationException, NonexistentEntityException {
+        int ejemplaresCargados = libro.getEjemplareslist().size();
+        int ejemplaresDeseados = Integer.parseInt(nuevaCantidadEjemplar);
+        
+        int diferencia = ejemplaresDeseados-ejemplaresCargados; 
+        
+        if (diferencia>0){
+            Ejemplar ej = new Ejemplar(libro);
+            for (int i=1; i<= diferencia;i++){
+                create(ej);    
+            }
+            showInformativeMessage("!Edición completada", "Info", "Validación de datos");
+        }else if (diferencia<0){
+            int eAElminar = Math.abs(diferencia);
+            List <Ejemplar> ejemplares = findEjemplaresByLibro(libro.getId_libro());
+            
+            int eliminados =0;
+            for(Ejemplar ej: ejemplares){
+                if(ej.getEstado()==1 && eliminados<eAElminar){
+                    destroy(ej.getId_ejemplar());
+                    
+                    eliminados++;
+                }
+            }
+            
+            if(eliminados<eAElminar){
+                showInformativeMessage("Solo se pudieron eliminar "+eliminados+" de "+eAElminar+"(Algunos están prstados)", "Info", "Datos parcialmente actualizados");
+            }
+        }   
     }
     
     

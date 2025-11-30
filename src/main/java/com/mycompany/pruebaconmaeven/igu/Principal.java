@@ -1,11 +1,12 @@
 
 package com.mycompany.pruebaconmaeven.igu;
 
-import com.mycompany.pruebaconmaeven.Interfaces.IPantalla;
 import javax.swing.JFrame;
+import com.mycompany.pruebaconmaeven.Interfaces.IMostrar;
+import com.mycompany.pruebaconmaeven.igu.Usuario.NuevoUsuario;
 
 
-public class Principal extends javax.swing.JFrame implements IPantalla{
+public class Principal extends javax.swing.JFrame implements IMostrar{
     
     public Principal() {
         initComponents();
@@ -26,6 +27,11 @@ public class Principal extends javax.swing.JFrame implements IPantalla{
 
         btnGestionUsuarios.setFont(new java.awt.Font("Gadugi", 0, 18)); // NOI18N
         btnGestionUsuarios.setText("Gestión de usuarios");
+        btnGestionUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGestionUsuariosActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Californian FB", 0, 36)); // NOI18N
         jLabel1.setText("Biblioteca virtual");
@@ -114,6 +120,11 @@ public class Principal extends javax.swing.JFrame implements IPantalla{
         // TODO add your handling code here:
     }//GEN-LAST:event_btnGestionPrestamosActionPerformed
 
+    private void btnGestionUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionUsuariosActionPerformed
+        NuevoUsuario nuevouser = new NuevoUsuario();
+        mostrarYCentrarPantalla(nuevouser);
+    }//GEN-LAST:event_btnGestionUsuariosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGestionLibros;
@@ -123,28 +134,14 @@ public class Principal extends javax.swing.JFrame implements IPantalla{
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
+    
+    //----------------------------------------------------------------  Interfaz IPantalla  ----------------------------------------------------------------  
 
     @Override
     public void mostrarYCentrarPantalla(JFrame pantalla) {
         pantalla.setVisible(true);
         pantalla.setLocationRelativeTo(null);
     }
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------  
 
-    @Override
-    public void vaciarTexto() {
-    }
-
-    @Override
-    public void regresar() {
-        dispose();
-    }
-
-    @Override
-    public void cargartTabla(javax.swing.JTable tablaConRegistros) {
-        
-    }
-
-    @Override
-    public void EliminarRegistroYRecargarPantalla() {
-    }
 }
