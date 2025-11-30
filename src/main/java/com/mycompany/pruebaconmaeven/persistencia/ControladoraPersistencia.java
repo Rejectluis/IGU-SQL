@@ -83,6 +83,7 @@ public class ControladoraPersistencia {
         return listaLibros;
     }
     
+    
     //----------------------------------------------------------------    Ejemplar    -------------------------------------------------
 
     public void crearEjemplar(Ejemplar ejemplar) {
@@ -116,6 +117,21 @@ public class ControladoraPersistencia {
         
         return ejemList;
     }
+    
+    public void eliminarEjemplaresPorLibro(int idLibro){
+        try {
+            controller3.eliminarEjemplaresPorLibro(idLibro); 
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, "Error al eliminar ejemplares del libro ID " + idLibro, ex);
+        }
+    }
+    
+    
+    public List<Ejemplar> traerEjemplaresPorLibro(int idLibro) {
+        return controller3.findEjemplaresByLibro(idLibro);
+    }
+    
+    
     //----------------------------------------------------------------    Prestamo    -------------------------------------------------
 
     public void crearPrestamo(Prestamo prestamo) {
@@ -146,5 +162,9 @@ public class ControladoraPersistencia {
         
         return controller4.findPrestamoEntities();
     }
- 
+
+    public boolean verificarLibroPrestado(int idLibro){
+        return controller4.libroTienePrestamos(idLibro);
+    }
+
 }
