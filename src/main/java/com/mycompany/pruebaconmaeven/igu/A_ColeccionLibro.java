@@ -1,7 +1,6 @@
 
 package com.mycompany.pruebaconmaeven.igu;
 
-import com.mycompany.pruebaconmaeven.Interfaces.IPantalla;
 import com.mycompany.pruebaconmaeven.logica.ControladoraLogica;
 import com.mycompany.pruebaconmaeven.logica.Libro;
 import java.awt.event.KeyEvent;
@@ -13,7 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 
-public class A_ColeccionLibro extends javax.swing.JFrame implements IPantalla{
+public class A_ColeccionLibro extends javax.swing.JFrame implements IColeccion{
     
     ControladoraLogica controller=null;
 
@@ -220,9 +219,7 @@ public class A_ColeccionLibro extends javax.swing.JFrame implements IPantalla{
                 A_ModificarDatos pantallaModif = new A_ModificarDatos(id_libro);
                 mostrarYCentrarPantalla(pantallaModif);
                 
-                this.dispose();
-                
-                
+                this.dispose();  
             }else{
                 JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
@@ -230,8 +227,6 @@ public class A_ColeccionLibro extends javax.swing.JFrame implements IPantalla{
             JOptionPane.showMessageDialog(null, "La tabla de libros está vacía.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             
         }
-        
-
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -254,11 +249,8 @@ public class A_ColeccionLibro extends javax.swing.JFrame implements IPantalla{
 
     private void BuscarLibroKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BuscarLibroKeyPressed
         if(evt.getExtendedKeyCode() == KeyEvent.VK_E){
-            
         }
     }//GEN-LAST:event_BuscarLibroKeyPressed
-
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField BuscarLibro;
@@ -281,10 +273,6 @@ public class A_ColeccionLibro extends javax.swing.JFrame implements IPantalla{
     public void mostrarYCentrarPantalla(JFrame pantalla) {
         pantalla.setVisible(true);
         pantalla.setLocationRelativeTo(null);
-    }
-
-    @Override
-    public void vaciarTexto() {
     }
 
     @Override
@@ -325,7 +313,7 @@ public class A_ColeccionLibro extends javax.swing.JFrame implements IPantalla{
         tablaConRegistros.setModel(modeloTabla);
     }
     
-        @Override
+    @Override
     public void EliminarRegistroYRecargarPantalla() {
         int id_libro = Integer.parseInt(String.valueOf(tablaLibro.getValueAt(tablaLibro.getSelectedRow(), 0))); // -> ... tablaLibro.getValueAt(tablaLibro.getSelectedRow(), 0))) = traeme los valores de(la fila seleccionada, en la columna 0)               
                 

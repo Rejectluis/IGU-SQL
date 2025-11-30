@@ -1,14 +1,25 @@
 
 package com.mycompany.pruebaconmaeven.logica;
 
+import com.mycompany.pruebaconmaeven.Interfaces.validaciones.IValidador;
+import com.mycompany.pruebaconmaeven.logica.validadores.LibroValidador;
 import com.mycompany.pruebaconmaeven.persistencia.ControladoraPersistencia;
+import inyeccion.InversionDependency;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 public class ControladoraLogica {
-    ControladoraPersistencia controlPersis = new ControladoraPersistencia();
+    ControladoraPersistencia controlPersis = null; //= new ControladoraPersistencia();
+    private InversionDependency dependencias; //= new InversionDependency();
+
+    public ControladoraLogica() {
+        this.dependencias = new InversionDependency();
+        this.controlPersis = new ControladoraPersistencia();
+    }
+    
+    
     
     ////////////////////////////////////////////////////////    Usuarios   //////////////////////////////////////////////////////////////////////////
     public void crearUsuario(Usuario user){
@@ -157,8 +168,7 @@ public class ControladoraLogica {
         }else{
             JOptionPane.showMessageDialog(null, "No es posible editar un libro con 0 ejemplares.","Dato no actualizado",JOptionPane.WARNING_MESSAGE);
         } 
-        //Setear la nueva lista de ejemplares al objeto libro
-        libro.setEjemplareslist(traerEjemplaresPorLibro(libro.getId_libro()));
+
         
     }
     
@@ -192,8 +202,38 @@ public class ControladoraLogica {
     //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
         
     //----------------------------------------------------------- igu.Libro ------------------------------------------------------------------------------------------------------------------------------------//
+   
+    /*
+    public void guardarLibroInyeccion(String autor, String codigoLibro, String ejemplares, String paginas, String publicacion, String titulo) {
+        IValidador<Libro> validadorGenerico = this.dependencias.getLibroValidador();
+        if(!(validadorGenerico instanceof LibroValidador)){
+            return;
+        }
     
-    public void guardar(String autor, String codigoLibro, String ejemplares, String paginas, String publicacion, String titulo) {
+        LibroValidador validadorStrings = (LibroValidador) validadorGenerico;
+        boolean validacionStringsExitosa = validadorStrings.validar(autor, codigoLibro, ejemplares, paginas, publicacion, titulo);
+        
+        if (!validacionStringsExitosa) {
+            // 2. Si la validación falló (devuelve false), salimos del método void.
+            //    El validador ya mostró el mensaje de error.
+            return;
+        }
+        
+        
+        int codi = Integer.parseInt(codigoLibro);
+        int fecha = Integer.parseInt(publicacion);
+        int pag = Integer.parseInt(paginas);
+        int ejem = Integer.parseInt(ejemplares);
+        
+        //--------------------- creación del libro y su carga a la BD -------------------------//
+        
+        Libro libro = new Libro(codi, titulo, autor, fecha, pag);
+        crearLibroYEjemplares(libro,ejem);
+        showInformativeMessage("¡Se guardó correctamente con inyeccion!", "Info", "¡Guardado exitoso!");
+        //--------------------- creación del libro y su carga a la BD -------------------------//
+    }
+    */
+    public void guardarLibro(String autor, String codigoLibro, String ejemplares, String paginas, String publicacion, String titulo) {
         boolean cargaValida = validacionesParaCargarDatosLibro(autor, codigoLibro, ejemplares, paginas, publicacion, titulo); // se llama al método encargado de realizar las validaciones pertienentes antes de cargar los datos a la BD
         if (!cargaValida){
             return;
@@ -211,6 +251,7 @@ public class ControladoraLogica {
         showInformativeMessage("¡Se guardó correctamente!", "Info", "¡Guardado exitoso!");
         //--------------------- creación del libro y su carga a la BD -------------------------//
     }
+    
     
     public void showInformativeMessage(String message, String type, String title){
         JOptionPane opti = new JOptionPane(message);
@@ -283,18 +324,16 @@ public class ControladoraLogica {
         }
         return true;
     }
-
-
-
-
-
-
-
-
-
     
+    //----------------------------------------------------------- igu.Usuario ------------------------------------------------------------------------------------------------------------------------------------//
+
+    public void guardarUsuario(String ape_materno, String ape_paterno, String dni, String email, String nombre, String telefono) {
+        
+    }
     
-    
-    
+    public void validacionesParaCargarDatosUsuario(String ape_materno, String ape_paterno, String dni, String email, String nombre, String telefono){
+        
+    }
+
     
 }

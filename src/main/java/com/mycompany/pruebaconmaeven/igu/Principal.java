@@ -1,11 +1,11 @@
 
 package com.mycompany.pruebaconmaeven.igu;
 
-import com.mycompany.pruebaconmaeven.Interfaces.IPantalla;
 import javax.swing.JFrame;
+import com.mycompany.pruebaconmaeven.Interfaces.IMostrar;
 
 
-public class Principal extends javax.swing.JFrame implements IPantalla{
+public class Principal extends javax.swing.JFrame implements IMostrar{
     
     public Principal() {
         initComponents();
@@ -123,28 +123,14 @@ public class Principal extends javax.swing.JFrame implements IPantalla{
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
+    
+    //----------------------------------------------------------------  Interfaz IPantalla  ----------------------------------------------------------------  
 
     @Override
     public void mostrarYCentrarPantalla(JFrame pantalla) {
         pantalla.setVisible(true);
         pantalla.setLocationRelativeTo(null);
     }
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------  
 
-    @Override
-    public void vaciarTexto() {
-    }
-
-    @Override
-    public void regresar() {
-        dispose();
-    }
-
-    @Override
-    public void cargartTabla(javax.swing.JTable tablaConRegistros) {
-        
-    }
-
-    @Override
-    public void EliminarRegistroYRecargarPantalla() {
-    }
 }
