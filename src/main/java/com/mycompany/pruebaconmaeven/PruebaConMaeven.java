@@ -4,10 +4,12 @@ package com.mycompany.pruebaconmaeven;
 
 import com.mycompany.pruebaconmaeven.igu.Principal;
 import com.mycompany.pruebaconmaeven.logica.ControladoraLogica;
+import com.mycompany.pruebaconmaeven.logica.Ejemplar;
 import com.mycompany.pruebaconmaeven.logica.Libro;
 import com.mycompany.pruebaconmaeven.logica.Prestamo;
 import com.mycompany.pruebaconmaeven.logica.Usuario;
 import java.time.LocalDate;
+import java.util.List;
 
 
 public class PruebaConMaeven {
@@ -47,6 +49,7 @@ public class PruebaConMaeven {
         Principal ventana = new Principal();
         ventana.setVisible(true);
         ventana.setLocationRelativeTo(null);
+        
 
         
     }

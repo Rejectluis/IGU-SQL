@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.pruebaconmaeven.persistencia;
 
 import com.mycompany.pruebaconmaeven.logica.Libro;
@@ -13,20 +9,20 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
 
 public class LibroJpaController implements Serializable {
 
     public LibroJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
+
     public LibroJpaController() {
         emf = Persistence.createEntityManagerFactory("PruebaPU");
     }
-    
+
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
@@ -109,11 +105,16 @@ public class LibroJpaController implements Serializable {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);
             }
-            return q.getResultList();
+            List <Libro> listaLibros = q.getResultList();
+            for (Libro lib: listaLibros){
+                em.refresh(lib);
+            }
+            
+            return listaLibros;
         } finally {
-            em.close();
+              em.close();  
+            }
         }
-    }
 
     public Libro findLibro(int id) {
         EntityManager em = getEntityManager();
@@ -137,4 +138,29 @@ public class LibroJpaController implements Serializable {
         }
     }
     
+    /* Método que crea una consulta JPQL para traer un libro desde ld BD con pregunta parcial o exacta -> estado actual: no usable/corregir
+    public List<Libro> searchByCodeOrTitle(String terminoBusqueda){
+        EntityManager em = getEntityManager();
+        List<Libro> libros = null;
+        
+        String terminoLike = "%"+terminoBusqueda.toUpperCase()+"%";
+        
+        try {
+            String jpql = "SELECT l FROM Libro l WHERE l.codigoLibro = :terminoExacto OR UPPER(l.tituloLibro) LIKE :terminoParcial";
+            TypedQuery<Libro> consulta = em.createQuery(jpql, Libro.class);
+            
+            consulta.setParameter("terminoExacto", terminoBusqueda);
+            consulta.setParameter("terminoParcial", terminoLike);
+            
+            libros = consulta.getResultList();
+        } catch (Exception e) {
+            
+        }finally{
+            if(em != null){
+                em.close();
+            }
+        }
+        return libros;
+    }
+    */ 
 }

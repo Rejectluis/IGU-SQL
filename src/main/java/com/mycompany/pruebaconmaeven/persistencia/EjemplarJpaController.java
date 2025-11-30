@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.pruebaconmaeven.persistencia;
 
 import com.mycompany.pruebaconmaeven.logica.Ejemplar;
@@ -126,7 +123,7 @@ public class EjemplarJpaController implements Serializable {
         } finally {
             em.close();
         }
-    }
+    }   
 
     public int getEjemplarCount() {
         EntityManager em = getEntityManager();
@@ -140,5 +137,60 @@ public class EjemplarJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public void eliminarEjemplaresPorLibro(int idLibro) throws Exception {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            String jpql = "DELETE FROM Ejemplar e WHERE e.libro.id_libro = :idLibro";
+
+            Query consulta = em.createQuery(jpql);
+            consulta.setParameter("idLibro", idLibro);
+
+            // Ejecutar la eliminación
+            int registrosEliminados = consulta.executeUpdate();
+
+            em.getTransaction().commit();
+
+        } catch (Exception ex) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new Exception("Error al eliminar ejemplares del libro ID " + idLibro, ex);
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+    
+    public List<Ejemplar> findEjemplaresByLibro(int idLibro) {
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("SELECT e FROM Ejemplar e WHERE e.libro.id_libro = :idLibro");
+            q.setParameter("idLibro", idLibro);
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 }

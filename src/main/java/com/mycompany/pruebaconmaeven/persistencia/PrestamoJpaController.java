@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.pruebaconmaeven.persistencia;
 
 import com.mycompany.pruebaconmaeven.logica.Prestamo;
@@ -13,13 +10,11 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-/**
- *
- * @author luisf
- */
+
 public class PrestamoJpaController implements Serializable {
 
     public PrestamoJpaController(EntityManagerFactory emf) {
@@ -140,4 +135,26 @@ public class PrestamoJpaController implements Serializable {
         }
     }
     
+    public boolean libroTienePrestamos(int idLibro){
+        EntityManager em = getEntityManager();
+        try {
+            String jpql = "SELECT COUNT(p) FROM Prestamo p JOIN p.ejemplar e WHERE e.libro.id_libro = :idLibro";
+            TypedQuery<Long> consulta = em.createQuery(jpql, Long.class);
+            consulta.setParameter("idLibro", idLibro);
+            
+            Long count = consulta.getSingleResult();
+            
+            return count > 0;
+            
+        } catch (Exception e) {
+            System.err.println("Error al verificar préstamos en PrestamoJpaController: " + e.getMessage());
+            
+            return true; 
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+  
 }

@@ -80,7 +80,6 @@
                           <Component id="btnRegresarMenu" alignment="0" min="-2" pref="205" max="-2" attributes="0"/>
                           <Component id="btnColeccionLibros" alignment="0" min="-2" pref="205" max="-2" attributes="0"/>
                           <Component id="btnNuevoLibro" alignment="0" min="-2" pref="205" max="-2" attributes="0"/>
-                          <Component id="btnBuscarLibro" alignment="0" min="-2" pref="205" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   </Group>
@@ -92,28 +91,15 @@
                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       <Component id="btnNuevoLibro" min="-2" pref="31" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnBuscarLibro" min="-2" pref="31" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnColeccionLibros" min="-2" pref="31" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnRegresarMenu" min="-2" pref="31" max="-2" attributes="0"/>
-                      <EmptySpace pref="146" max="32767" attributes="0"/>
+                      <EmptySpace pref="189" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="btnBuscarLibro">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Gadugi" size="18" style="0"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Buscar libro"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBuscarLibroActionPerformed"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JButton" name="btnNuevoLibro">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">

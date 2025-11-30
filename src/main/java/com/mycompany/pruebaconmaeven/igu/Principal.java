@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 
 public class Principal extends javax.swing.JFrame implements IPantalla{
     
-
     public Principal() {
         initComponents();
     }
@@ -108,6 +107,7 @@ public class Principal extends javax.swing.JFrame implements IPantalla{
     private void btnGestionLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionLibrosActionPerformed
         A_GestionLibros gestiLibro = new A_GestionLibros();
         mostrarYCentrarPantalla(gestiLibro);
+        
     }//GEN-LAST:event_btnGestionLibrosActionPerformed
 
     private void btnGestionPrestamosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionPrestamosActionPerformed
@@ -137,5 +137,14 @@ public class Principal extends javax.swing.JFrame implements IPantalla{
     @Override
     public void regresar() {
         dispose();
+    }
+
+    @Override
+    public void cargartTabla(javax.swing.JTable tablaConRegistros) {
+        
+    }
+
+    @Override
+    public void EliminarRegistroYRecargarPantalla() {
     }
 }
