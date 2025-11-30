@@ -3,6 +3,7 @@ package com.mycompany.pruebaconmaeven.igu;
 
 import javax.swing.JFrame;
 import com.mycompany.pruebaconmaeven.Interfaces.IMostrar;
+import com.mycompany.pruebaconmaeven.igu.Usuario.NuevoUsuario;
 
 
 public class Principal extends javax.swing.JFrame implements IMostrar{
@@ -26,6 +27,11 @@ public class Principal extends javax.swing.JFrame implements IMostrar{
 
         btnGestionUsuarios.setFont(new java.awt.Font("Gadugi", 0, 18)); // NOI18N
         btnGestionUsuarios.setText("Gestión de usuarios");
+        btnGestionUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGestionUsuariosActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Californian FB", 0, 36)); // NOI18N
         jLabel1.setText("Biblioteca virtual");
@@ -113,6 +119,11 @@ public class Principal extends javax.swing.JFrame implements IMostrar{
     private void btnGestionPrestamosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionPrestamosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnGestionPrestamosActionPerformed
+
+    private void btnGestionUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionUsuariosActionPerformed
+        NuevoUsuario nuevouser = new NuevoUsuario();
+        mostrarYCentrarPantalla(nuevouser);
+    }//GEN-LAST:event_btnGestionUsuariosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

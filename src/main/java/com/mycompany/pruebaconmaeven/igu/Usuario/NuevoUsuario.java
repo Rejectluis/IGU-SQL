@@ -256,8 +256,6 @@ public class NuevoUsuario extends javax.swing.JFrame implements IResetear, IReto
             txtNombreUsuario.getText(),
             txtTelefono.getText()
         );
-
-        
     }//GEN-LAST:event_btnGuardarActionPerformed
 
 

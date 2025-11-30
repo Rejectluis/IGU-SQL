@@ -262,7 +262,6 @@ public class A_ModificarDatos extends javax.swing.JFrame implements IMostrar,IRe
         String ejemplares = txtEjemplares.getText();
         
         controller.guardarModificacion(libro, autor, codigoLibro, ejemplares, paginas, publicacion, titulo);
-        controller.modificarEjemplares(libro, txtEjemplares.getText());
         
         A_ColeccionLibro pantalla = new A_ColeccionLibro();
         mostrarYCentrarPantalla(pantalla);
