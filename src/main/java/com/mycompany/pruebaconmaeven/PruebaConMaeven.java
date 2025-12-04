@@ -4,49 +4,16 @@ package com.mycompany.pruebaconmaeven;
 
 import com.mycompany.pruebaconmaeven.igu.Principal;
 import com.mycompany.pruebaconmaeven.logica.ControladoraLogica;
-import com.mycompany.pruebaconmaeven.logica.Ejemplar;
-import com.mycompany.pruebaconmaeven.logica.Libro;
-import com.mycompany.pruebaconmaeven.logica.Prestamo;
-import com.mycompany.pruebaconmaeven.logica.Usuario;
-import java.time.LocalDate;
-import java.util.List;
+
 
 
 public class PruebaConMaeven {
 
     public static void main(String[] args) {
-        ControladoraLogica control = new ControladoraLogica();
-
-        /*
-        //Crear el libro
-        Libro libro = new Libro(102, "Cien años de soledad", "Gabriel GM", 1977, 376);
+        ControladoraLogica controller = new ControladoraLogica();
+        Principal ventana = new Principal(controller);
         
-        //Guarda el libro en BD, crea la cantidad de ejemplares del libro y los guarda en la BD
-        control.crearLibroYEjemplares(libro, 6);
         
-        //Crear un usuario
-        Usuario usuario = new Usuario("44444444","Angel Amenadiel","Saragoza","Narvaes", "pruebadejemplo@gmil.com", "555555555");
-        
-        //Cargar usuario a la BD
-        control.crearUsuario(usuario);
-        
-        //Crear el prestamo 
-        Prestamo prestamo = new Prestamo(control.traerUsuario(1), control.traerEjemplar(1));
-        
-        //Cargar el prestamo a la BD
-        control.crearPrestamo(prestamo);
-        
-        //Traigo el prestamo de id 2
-        Prestamo press = control.traerPrestamo(2);
-        //Seteo la fecha de devolución real para indicar que ya se devolvió el libro
-        press.setFecha_devolucion_real(LocalDate.now());
-        press.setEstado(0); // 0 -> se devolvió el libro
-        
-        //Se edita el prestamo con la fecha de devolución y el estado inactivo 
-        control.editarPrestamo(press);
-        */
-        
-        Principal ventana = new Principal();
         ventana.setVisible(true);
         ventana.setLocationRelativeTo(null);
         

@@ -25,7 +25,7 @@ public class InversionDependency {
     public IValidador<Libro> getLibroValidador() {return libroValidador;}
     public IValidador<Usuario> getUsuarioValidador() {return usuarioValidador;}
     
-    //---------------------------------------------------------------- Métodos auxiliares para validación de datos ----------------------------------------------------------------------------------------//
+    //---------------------------------------------------------------- lIBRO -> Métodos auxiliares para validación de datos ----------------------------------------------------------------------------------------//
     
     
     public boolean validarDatosLibro(String autor, String codigoLibro, String ejemplares, String paginas, String publicacion, String titulo){                                   //-- Explicación del métdo--//
@@ -40,19 +40,44 @@ public class InversionDependency {
         return validadorStrings.validar(autor, codigoLibro, ejemplares, paginas, publicacion, titulo);                                          // -> El método validarDatosLibro delega la tarea real de validación al objeto LibroValidador. Este método ejecuta toda la lógica de validación de formato/rango y devuelve el resultado
     }
     
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+    
+    //---------------------------------------------------------------- USUARIO -> Métodos auxiliares para validación de datos -------------------------------------------------------------------------------------//
     public boolean validarDatosUsuario(String ape_materno, String ape_paterno, String dni, String email, String nombre, String telefono){       // -> Aplica la misma idea del método validarDatosLibro
         IValidador<Usuario> validadorGenerico = this.getUsuarioValidador();
-    
         if(!(validadorGenerico instanceof UsuarioValidador)){
             //showInformativeMessage("ERROR: No se pudo cargar el validador de Usuario.", "Error", "Error de inyección");
             return false;
         }
+        
 
         UsuarioValidador validadorStrings = (UsuarioValidador) validadorGenerico;
         return validadorStrings.validacionesParaCargarDatosUsuario(ape_materno, ape_paterno, dni, email, nombre, telefono);
     }
+
+    public boolean validarDni(String dniOriginal, String dniNuevo) {
+        IValidador<Usuario> validadorDeDatosUnicos = this.getUsuarioValidador();
+        if(!(validadorDeDatosUnicos instanceof UsuarioValidador)){
+            //showInformativeMessage("ERROR: No se pudo cargar los cambios de DNI del Usuario.", "Error", "Error de inyección");
+            return false;
+        }
+        
+        UsuarioValidador validadorDni = (UsuarioValidador)validadorDeDatosUnicos;
+        return validadorDni.validarDatoUniqueDni(dniOriginal, dniNuevo);
+    }
+
+    public boolean validarEmail(String emailOriginal, String emailNuevo) {
+        IValidador<Usuario> validadorDeDatosUnicos = this.getUsuarioValidador();
+        if(!(validadorDeDatosUnicos instanceof UsuarioValidador)){
+            //showInformativeMessage("ERROR: No se pudo cargar los cambios del email del Usuario.", "Error", "Error de inyección");
+            return false;
+        }
+        
+        UsuarioValidador validarEmail = (UsuarioValidador) validadorDeDatosUnicos;
+        return validarEmail.validarDatoUniqueEmail(emailOriginal, emailNuevo);
+    }
     
-    
+
     
     
     

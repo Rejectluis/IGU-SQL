@@ -284,7 +284,6 @@ public class A_ColeccionLibro extends javax.swing.JFrame implements IColeccion{
     public void cargartTabla(javax.swing.JTable tablaConRegistros) {
         // Se define el modelo de tabla donde se presentarán los registros
         DefaultTableModel modeloTabla = new DefaultTableModel(){ 
-            
             // se establece que las filas y columnas no sean editables
             @Override
             public boolean isCellEditable(int row, int column){

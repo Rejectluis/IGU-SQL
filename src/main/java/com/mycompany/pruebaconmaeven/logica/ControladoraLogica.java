@@ -1,9 +1,6 @@
 
 package com.mycompany.pruebaconmaeven.logica;
 
-import com.mycompany.pruebaconmaeven.Interfaces.validaciones.IValidador;
-import com.mycompany.pruebaconmaeven.logica.validadores.LibroValidador;
-import com.mycompany.pruebaconmaeven.logica.validadores.UsuarioValidador;
 import com.mycompany.pruebaconmaeven.persistencia.ControladoraPersistencia;
 import inyeccion.InversionDependency;
 import java.util.ArrayList;
@@ -11,7 +8,7 @@ import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-public class ControladoraLogica {
+public class ControladoraLogica implements IControladora{
     ControladoraPersistencia controlPersis = null; 
     private InversionDependency dependencias; 
 
@@ -178,27 +175,89 @@ public class ControladoraLogica {
     }
 
     //----------------------------------------------------------- igu.Usuario ------------------------------------------------------------------------------------------------------------------------------------//
-
-    public void guardarUsuario(String ape_materno, String ape_paterno, String dni, String email, String nombre, String telefono) {
-      boolean comproExitosa = this.dependencias.validarDatosUsuario(ape_materno, ape_paterno, dni, email, nombre, telefono);
-
-      if(!comproExitosa){
+    
+    @Override
+    public void cargarUsuario(String ape_materno, String ape_paterno, String dni, String email, String nombre, String telefono) {
+      if(!(this.dependencias.validarDatosUsuario(ape_materno, ape_paterno, dni, email, nombre, telefono))){
         return; 
       }
 
       Usuario user = new Usuario(dni, nombre, ape_paterno, ape_materno, email, telefono);
       crearUsuario(user);
       showInformativeMessage("¡Se guardó el usuario correctamente!", "Info", "¡Guardado exitoso!");
+        
     }
     
+    @Override
+    public List<Object[]> mostrarRegistrosDeUsuario() {
+        List<Usuario> user = this.controlPersis.traerListaUsuarios();    // traigo los datos desde la BD
+        List<Object[]> datosTabla= new ArrayList<>();               // creo un arraylist para almacenarlos aquí
+        
+        if(user !=null){                                             //Verifico que la lista no sea null
+            for(Usuario e: user){
+                if(e.getEstado()==1){                               //Si el libro está disponible lo agrego a la lista de objetos
+                    Object[] registros = {
+                        e.getId_usuario(), 
+                        e.getNombre(),
+                        e.getApe_paterno(),
+                        e.getApe_materno(),
+                        e.getDni(),
+                        e.getEmail(),
+                        e.getTelefono()
+                    };
+                    datosTabla.add(registros);                          //Se agregan las instancias a la lista de objetos
+                }
+            }
+        }
+        return datosTabla;
+    }
+
+    @Override
+    public Object[] pasarDatosDelUsuario(int idUsuario) {
+        Usuario user = controlPersis.traerUsuario(idUsuario);
+        
+        if(user!=null){
+            Object[] datos = {
+                user.getNombre(),
+                user.getApe_paterno(),
+                user.getApe_materno(),
+                user.getDni(),
+                user.getEmail(),
+                user.getTelefono()
+            };
+            return datos;
+        }
+        return null;
+    }
     
-    
-    
-    
-    
-    
-    
-    
+    @Override
+    public void guardarModificacion(int idUsuario,String apellidoPaternoNuevo, String apellidoMaternoNuevo, String dniNuevo, String emailNuevo, String nombreNuevo, String telefonoNuevo) {
+        if(!(this.dependencias.validarDatosUsuario(apellidoMaternoNuevo, apellidoPaternoNuevo, dniNuevo, emailNuevo, nombreNuevo, telefonoNuevo))){
+            return; 
+        }
+        
+        Usuario usuarioOriginal = this.controlPersis.traerUsuario(idUsuario);
+        
+        String dniOriginal = usuarioOriginal.getDni();
+        String emailOriginal = usuarioOriginal.getEmail();
+        
+        if(this.dependencias.validarDni(dniOriginal, dniNuevo)){                                                              // -> true: significa que sí se desea editar el dni
+           usuarioOriginal.setDni(dniNuevo);                                                    
+        }
+        
+        if(this.dependencias.validarEmail(emailOriginal, emailNuevo)){                                                        // -> true: significa que sí se desea editar el email         
+            usuarioOriginal.setEmail(emailNuevo);
+        }
+        
+        usuarioOriginal.setApe_paterno(apellidoPaternoNuevo);
+        usuarioOriginal.setApe_materno(apellidoMaternoNuevo);
+        usuarioOriginal.setNombre(nombreNuevo);
+        usuarioOriginal.setTelefono(telefonoNuevo);
+        
+        this.controlPersis.editarUsuario(usuarioOriginal);
+        showInformativeMessage("¡Usuario editado con éxito!", "Info","!Actualización de datos ralizada!");
+
+    }
     
     
     
@@ -249,7 +308,10 @@ public class ControladoraLogica {
         dialog.setAlwaysOnTop(true);
         dialog.setVisible(true);
     }
-    
+
+
+
+
     
     
 }

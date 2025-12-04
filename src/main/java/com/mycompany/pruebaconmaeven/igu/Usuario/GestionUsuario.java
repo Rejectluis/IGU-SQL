@@ -1,15 +1,17 @@
 
 package com.mycompany.pruebaconmaeven.igu.Usuario;
 
-import com.mycompany.pruebaconmaeven.igu.*;
 import com.mycompany.pruebaconmaeven.Interfaces.IRetornar;
 import com.mycompany.pruebaconmaeven.Interfaces.IMostrar;
+import com.mycompany.pruebaconmaeven.logica.IControladora;
+import com.mycompany.pruebaconmaeven.logica.IGuiUsuario;
 
 public class GestionUsuario extends javax.swing.JFrame implements IMostrar, IRetornar{
-
-
-    public GestionUsuario() {
+    
+    private final IControladora controller;
+    public GestionUsuario(IControladora controller) {
         initComponents();
+        this.controller = controller;
     }
 
     @SuppressWarnings("unchecked")
@@ -112,9 +114,8 @@ public class GestionUsuario extends javax.swing.JFrame implements IMostrar, IRet
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoUsuarioActionPerformed
-        NuevoUsuario lb = new NuevoUsuario();
-        mostrarYCentrarPantalla(lb);
-        
+        UsuarioNuevo nuevoUser = new UsuarioNuevo((IGuiUsuario)this.controller);
+        mostrarYCentrarPantalla(nuevoUser);
     }//GEN-LAST:event_btnNuevoUsuarioActionPerformed
 
     private void btnRegresarMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarMenuActionPerformed
@@ -122,8 +123,8 @@ public class GestionUsuario extends javax.swing.JFrame implements IMostrar, IRet
     }//GEN-LAST:event_btnRegresarMenuActionPerformed
 
     private void btnColeccionUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColeccionUsuariosActionPerformed
-        A_ColeccionLibro colec = new A_ColeccionLibro();
-        mostrarYCentrarPantalla(colec);
+        UsuarioVerDatos registrosUser = new UsuarioVerDatos(this.controller);
+        mostrarYCentrarPantalla(registrosUser);
         
     }//GEN-LAST:event_btnColeccionUsuariosActionPerformed
 
