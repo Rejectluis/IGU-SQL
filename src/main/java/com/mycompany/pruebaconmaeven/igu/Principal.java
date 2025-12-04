@@ -3,13 +3,17 @@ package com.mycompany.pruebaconmaeven.igu;
 
 import javax.swing.JFrame;
 import com.mycompany.pruebaconmaeven.Interfaces.IMostrar;
-import com.mycompany.pruebaconmaeven.igu.Usuario.NuevoUsuario;
+import com.mycompany.pruebaconmaeven.igu.Usuario.GestionUsuario;
+import com.mycompany.pruebaconmaeven.logica.IControladora;
 
 
 public class Principal extends javax.swing.JFrame implements IMostrar{
     
-    public Principal() {
+    private final IControladora controller;
+    
+    public Principal(IControladora controller) {
         initComponents();
+        this.controller = controller;
     }
 
     @SuppressWarnings("unchecked")
@@ -121,8 +125,8 @@ public class Principal extends javax.swing.JFrame implements IMostrar{
     }//GEN-LAST:event_btnGestionPrestamosActionPerformed
 
     private void btnGestionUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionUsuariosActionPerformed
-        NuevoUsuario nuevouser = new NuevoUsuario();
-        mostrarYCentrarPantalla(nuevouser);
+        GestionUsuario gestionUser = new GestionUsuario(this.controller);
+        mostrarYCentrarPantalla(gestionUser);
     }//GEN-LAST:event_btnGestionUsuariosActionPerformed
 
 

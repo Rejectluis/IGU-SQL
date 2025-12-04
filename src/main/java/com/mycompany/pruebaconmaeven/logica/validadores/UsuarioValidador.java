@@ -40,7 +40,7 @@ public class UsuarioValidador implements IValidador<Usuario>{
         
         // ------------------------------------------------------ 1. Validación de campos obligatorios 
         if (nombre.trim().isEmpty() || ape_paterno.trim().isEmpty() || dni.trim().isEmpty() || email.trim().isEmpty()) {
-            showInformativeMessage("ERROR: Los campos Nombre, Apellido Paterno, DNI y Email son obligatorios.", "Error", "Error de validación");
+            showInformativeMessage("ERROR: Los campos Nombre, Apellidos, DNI y Email son obligatorios.", "Error", "Error de validación");
             return false;
         }
         
@@ -69,6 +69,20 @@ public class UsuarioValidador implements IValidador<Usuario>{
             return false;
         }
         return true; 
+    }        //-> Antes de cargar los datos a la bd, el método verifica que no sean datos no incoherentes, como nombres vacíos, o strings en lugar de números.                                
+
+    public boolean validarDatoUniqueDni(String dniOriginal, String dniNuevo) {
+        if(dniOriginal.equals(dniNuevo)){
+            return false;                           // -> false: significa que no se pretende editar dni 
+        }
+        return true;                               // -> true: significa que sí se desea editar el dni en la bd
+    }
+
+    public boolean validarDatoUniqueEmail(String emailOriginal, String emailNuevo) {
+        if(emailOriginal.equals(emailNuevo)){
+            return false;                               // -> false: sigfnifica que no se pretende editar el email
+        }
+        return true;                                    // -> true: singifica que sí se pretende editar el email
     }
     
     
