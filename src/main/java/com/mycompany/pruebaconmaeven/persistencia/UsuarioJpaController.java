@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.pruebaconmaeven.persistencia;
 
 import com.mycompany.pruebaconmaeven.logica.Usuario;
@@ -13,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -135,5 +133,47 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public boolean existeUsuarioPorDni(String dni) {
+        EntityManager em = getEntityManager(); 
+        Long count = 0L; 
+
+        String jpql = "SELECT COUNT(u) FROM Usuario u WHERE u.dni = :dniRegis";
+
+        try {
+            TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+
+            query.setParameter("dniRegis", dni);
+            count = query.getSingleResult(); 
+        } catch (Exception e) {
+            
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+        return count > 0; 
+    }
+    
+    public boolean existeUsuarioPorEmail(String email) {
+        EntityManager em = getEntityManager(); 
+        Long count = 0L; 
+
+        String jpql = "SELECT COUNT(u) FROM Usuario u WHERE u.email = :emailRegis";
+
+        try {
+            TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+
+            query.setParameter("emailRegis", email);
+            count = query.getSingleResult(); 
+        } catch (Exception e) {
+            
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+        return count > 0; 
+    }
+    
+    
 
 }

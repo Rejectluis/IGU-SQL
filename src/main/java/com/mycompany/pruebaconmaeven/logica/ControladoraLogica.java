@@ -242,10 +242,18 @@ public class ControladoraLogica implements IControladora{
         String emailOriginal = usuarioOriginal.getEmail();
         
         if(this.dependencias.validarDni(dniOriginal, dniNuevo)){                                                              // -> true: significa que sí se desea editar el dni
-           usuarioOriginal.setDni(dniNuevo);                                                    
+            if(controlPersis.consultarDniEnBD(dniNuevo)){
+                showInformativeMessage("El DNI ingresado ya está registrado", "Error", "Error en el ingreso de datos");
+                return;
+            }
+            usuarioOriginal.setDni(dniNuevo);
         }
         
         if(this.dependencias.validarEmail(emailOriginal, emailNuevo)){                                                        // -> true: significa que sí se desea editar el email         
+            if(controlPersis.consultarEmailEnBD(emailNuevo)){
+                showInformativeMessage("El email ingresado ya está registrado", "Error", "Error en el ingreso de datos");
+                return;
+            }
             usuarioOriginal.setEmail(emailNuevo);
         }
         

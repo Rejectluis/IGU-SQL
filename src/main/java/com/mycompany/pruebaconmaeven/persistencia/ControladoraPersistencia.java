@@ -50,6 +50,14 @@ public class ControladoraPersistencia {
         
         return arraylistUsers;
     }
+
+    public boolean consultarDniEnBD(String dniNuevo) {
+        return controller1.existeUsuarioPorDni(dniNuevo);
+    }
+    
+    public boolean consultarEmailEnBD(String emailNuevo) {
+        return controller1.existeUsuarioPorEmail(emailNuevo);
+    }
     
     //----------------------------------------------------------------     Libro   --------------------------------------------------------
     public void crearLibro(Libro libro) {
