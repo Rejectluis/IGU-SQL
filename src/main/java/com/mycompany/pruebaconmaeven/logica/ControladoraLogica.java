@@ -22,6 +22,7 @@ public class ControladoraLogica implements IControladora{
         controlPersis.crearUsuario(user);
     }
     
+    @Override
     public void eliminarUsuario(int id){     
         controlPersis.eliminarUsuario(id);  
     }                                       
@@ -50,19 +51,19 @@ public class ControladoraLogica implements IControladora{
         }
     }
     
-    public void eliminarLibro(int idLibro)throws Exception {
-        
+    
+    @Override
+    public void eliminarLibro(int idLibro){
         if(controlPersis.verificarLibroPrestado(idLibro)){
-            throw new Exception("ERROR: El libro con ID " + idLibro + " no puede eliminarse porque tiene registros de préstamos asociados.");
+            JOptionPane.showMessageDialog(null, "ERROR: El libro con ID "+idLibro+" no puede eliminarse porque tiene registros de préstamos asociados.",
+                "Error al eliminar un libro", JOptionPane.WARNING_MESSAGE);
         }
-        
         try {
             controlPersis.eliminarEjemplaresPorLibro(idLibro);
             controlPersis.eliminarLibro(idLibro);
             JOptionPane.showMessageDialog(null,"Libro ID " + idLibro + " y todos sus ejemplares eliminados exitosamente.");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,"Fallo durante el proceso de eliminación en la base de datos." );
-            throw new Exception("Error al ejecutar la eliminación del libro.", e);
         }
     }
     
@@ -75,7 +76,8 @@ public class ControladoraLogica implements IControladora{
         return controlPersis.traerLibro(id);
     }
     
-    public ArrayList<Libro> traerListaLibros(){
+    
+    public ArrayList<Libro> listarLibros(){
         return controlPersis.traerListaLibros();
     }
    
@@ -149,10 +151,19 @@ public class ControladoraLogica implements IControladora{
     
     //----------------------------------------------------------- igu.Libro ------------------------------------------------------------------------------------------------------------------------------------//
    
-    public void guardarLibro(String autor, String codigoLibro, String ejemplares, String paginas, String publicacion, String titulo) {
-        boolean comproExitosa = this.dependencias.validarDatosLibro(autor, codigoLibro, ejemplares, paginas, publicacion, titulo);
+    /*
+    *   El método se encarga de guardar los datos del libro en la base de datos. Al empezar, el primer if se encarga de verificar
+    *   que los strings enviados desde la interfaz gráfica de «A_NuevoLibro» sean datos válidos. Si no son válidos se termina
+    *   el ciclo de vida del método. Lo mismo sucede con el método "GuardarModificación".
+    */
+    @Override
+    public void guardarLibro(String autor, String codigoLibro, String ejemplares, String paginas, String publicacion, String titulo) {        
+        if(!(this.dependencias.validarDatosLibro(autor, codigoLibro, ejemplares, paginas, publicacion, titulo))){
+            return;
+        }
         
-        if(!comproExitosa){
+        if(this.controlPersis.codigoLibroExisteBD(Integer.parseInt(codigoLibro))){
+            showInformativeMessage("El código del libro ingresado ya está registrado", "Error", "Error en el ingreso de datos");
             return;
         }
         
@@ -160,20 +171,83 @@ public class ControladoraLogica implements IControladora{
         showInformativeMessage("¡Se guardó correctamente con inyeccion!", "Info", "¡Guardado exitoso!");
     }
     
-    public void guardarModificacion(Libro libro, String autor, String codigoLibro, String ejemplares, String paginas, String publicacion, String titulo) {
-        boolean comproExitosa = this.dependencias.validarDatosLibro(autor, codigoLibro, ejemplares, paginas, publicacion, titulo);
-        
-        if(!comproExitosa){
+    @Override
+    public void guardarModificacionLibro(int idLibro, String autorNuevo, String codigoLibroNuevo, String ejemplaresNuevo, String paginasNuevas, String publicacionNueva, String tituloNuevo) {
+        if(!(this.dependencias.validarDatosLibro(autorNuevo, codigoLibroNuevo, ejemplaresNuevo, paginasNuevas, publicacionNueva, tituloNuevo))){
             return;
         }
         
-        //validación faltante: que el codigo del libro no esté usado ya: implementar
+        Libro libroOriginal = controlPersis.traerLibro(idLibro);
+        String codigoLibroOriginal = String.valueOf(libroOriginal.getCodigo_libro());
         
-        controlPersis.editarLibro(setearDatos(libro, autor, codigoLibro, ejemplares, paginas, publicacion, titulo));
+        if(this.dependencias.validarCodigoLibro(codigoLibroOriginal, codigoLibroNuevo)){
+            if(this.controlPersis.codigoLibroExisteBD(Integer.parseInt(codigoLibroNuevo))){
+                showInformativeMessage("El código del libro ingresado ya está registrado", "Error", "Error en el ingreso de datos");
+                return;
+            }
+            libroOriginal.setCodigo_libro(Integer.parseInt(codigoLibroNuevo));
+        }
+        
+        libroOriginal.setAutor(autorNuevo);
+        libroOriginal.setNro_paginas(Integer.parseInt(paginasNuevas));
+        libroOriginal.setAnno_publicacion(Integer.parseInt(publicacionNueva));
+        libroOriginal.setTitulo(tituloNuevo);
+        
+        controlPersis.modificarEjemplar(libroOriginal, ejemplaresNuevo);
         showInformativeMessage("!Se actualizó el libro correctamente!", "Info", "¡Actualización de datos exitosa!");
-        controlPersis.modificarEjemplar(libro, ejemplares);
-    }
 
+    }
+    
+    /*
+    *   El método se encarga de traer los datos del libro desde la base de datos y transformarlo en una lista de objetos.
+    *   Se hace de esta manera para que la igu de «A_oleccionLibro» no esté relacionada la clase Libro directamente.
+    *   En su método «cargarTabla», la línea List<Object[]> libros = controller.mostrarRegistrosDeLibros(); " trae los datos
+    *   de cada registro de libros, pero no está retornando datos de tipo Libro, sino datos de tipo List<Objet[]>
+    */
+
+    @Override
+    public List<Object[]> mostrarRegistrosDeLibros() {
+        
+        List<Libro> liber = this.controlPersis.traerListaLibros();    
+        List<Object[]> datosTabla= new ArrayList<>();               
+        
+        if(liber !=null){                                             
+            for(Libro e: liber){
+                if(e.getEstado()==1){                               
+                    Object[] registros = {
+                        e.getId_libro(), 
+                        e.getTitulo(),
+                        e.getAutor(),
+                        e.getAnno_publicacion(),
+                        e.getEjemplareslist().size(),
+                        e.getCodigo_libro()
+                    };
+                    datosTabla.add(registros);                          
+                }
+            }
+        }
+        return datosTabla;
+    }
+    
+    @Override
+    public Object[] pasarDatosDelLibro(int idLibro) {
+        
+        Libro lib = controlPersis.traerLibro(idLibro);
+        
+        if(lib!=null){
+            Object[] datos = {
+                lib.getAutor(),
+                lib.getCodigo_libro(),
+                lib.getEjemplareslist().size(),
+                lib.getNro_paginas(),
+                lib.getAnno_publicacion(),
+                lib.getTitulo()
+            };
+            return datos;
+        }
+        return null;
+    }
+    
     //----------------------------------------------------------- igu.Usuario ------------------------------------------------------------------------------------------------------------------------------------//
     
     @Override
@@ -189,6 +263,42 @@ public class ControladoraLogica implements IControladora{
     }
     
     @Override
+    public void guardarModificacion(int idUsuario,String apellidoPaternoNuevo, String apellidoMaternoNuevo, String dniNuevo, String emailNuevo, String nombreNuevo, String telefonoNuevo) {
+        if(!(this.dependencias.validarDatosUsuario(apellidoMaternoNuevo, apellidoPaternoNuevo, dniNuevo, emailNuevo, nombreNuevo, telefonoNuevo))){
+            return; 
+        }
+        
+        Usuario usuarioOriginal = this.controlPersis.traerUsuario(idUsuario);
+        
+        String dniOriginal = usuarioOriginal.getDni();
+        String emailOriginal = usuarioOriginal.getEmail();
+        
+        if(this.dependencias.validarDni(dniOriginal, dniNuevo)){                                                              // -> true: significa que sí se desea editar el dni
+            if(controlPersis.consultarDniEnBD(dniNuevo)){
+                showInformativeMessage("El DNI ingresado ya está registrado", "Error", "Error en el ingreso de datos");
+                return;
+            }
+            usuarioOriginal.setDni(dniNuevo);
+        }
+        
+        if(this.dependencias.validarEmail(emailOriginal, emailNuevo)){                                                        // -> true: significa que sí se desea editar el email         
+            if(controlPersis.consultarEmailEnBD(emailNuevo)){
+                showInformativeMessage("El email ingresado ya está registrado", "Error", "Error en el ingreso de datos");
+                return;
+            }
+            usuarioOriginal.setEmail(emailNuevo);
+        }
+        
+        usuarioOriginal.setApe_paterno(apellidoPaternoNuevo);
+        usuarioOriginal.setApe_materno(apellidoMaternoNuevo);
+        usuarioOriginal.setNombre(nombreNuevo);
+        usuarioOriginal.setTelefono(telefonoNuevo);
+        
+        this.controlPersis.editarUsuario(usuarioOriginal);
+        showInformativeMessage("¡Usuario editado con éxito!", "Info","!Actualización de datos ralizada!");
+    }
+    
+        @Override
     public List<Object[]> mostrarRegistrosDeUsuario() {
         List<Usuario> user = this.controlPersis.traerListaUsuarios();    // traigo los datos desde la BD
         List<Object[]> datosTabla= new ArrayList<>();               // creo un arraylist para almacenarlos aquí
@@ -229,47 +339,6 @@ public class ControladoraLogica implements IControladora{
         }
         return null;
     }
-    
-    @Override
-    public void guardarModificacion(int idUsuario,String apellidoPaternoNuevo, String apellidoMaternoNuevo, String dniNuevo, String emailNuevo, String nombreNuevo, String telefonoNuevo) {
-        if(!(this.dependencias.validarDatosUsuario(apellidoMaternoNuevo, apellidoPaternoNuevo, dniNuevo, emailNuevo, nombreNuevo, telefonoNuevo))){
-            return; 
-        }
-        
-        Usuario usuarioOriginal = this.controlPersis.traerUsuario(idUsuario);
-        
-        String dniOriginal = usuarioOriginal.getDni();
-        String emailOriginal = usuarioOriginal.getEmail();
-        
-        if(this.dependencias.validarDni(dniOriginal, dniNuevo)){                                                              // -> true: significa que sí se desea editar el dni
-            if(controlPersis.consultarDniEnBD(dniNuevo)){
-                showInformativeMessage("El DNI ingresado ya está registrado", "Error", "Error en el ingreso de datos");
-                return;
-            }
-            usuarioOriginal.setDni(dniNuevo);
-        }
-        
-        if(this.dependencias.validarEmail(emailOriginal, emailNuevo)){                                                        // -> true: significa que sí se desea editar el email         
-            if(controlPersis.consultarEmailEnBD(emailNuevo)){
-                showInformativeMessage("El email ingresado ya está registrado", "Error", "Error en el ingreso de datos");
-                return;
-            }
-            usuarioOriginal.setEmail(emailNuevo);
-        }
-        
-        usuarioOriginal.setApe_paterno(apellidoPaternoNuevo);
-        usuarioOriginal.setApe_materno(apellidoMaternoNuevo);
-        usuarioOriginal.setNombre(nombreNuevo);
-        usuarioOriginal.setTelefono(telefonoNuevo);
-        
-        this.controlPersis.editarUsuario(usuarioOriginal);
-        showInformativeMessage("¡Usuario editado con éxito!", "Info","!Actualización de datos ralizada!");
-
-    }
-    
-    
-    
-    
     
     
     
@@ -316,6 +385,7 @@ public class ControladoraLogica implements IControladora{
         dialog.setAlwaysOnTop(true);
         dialog.setVisible(true);
     }
+
 
 
 

@@ -92,6 +92,14 @@ public class LibroValidador implements IValidador<Libro>{
         }
         return true;
     }
+
+    public boolean validarCodigoLibro(String codigoLibroOriginal, String codigoLibroNuevo) {
+        
+        if(codigoLibroOriginal.equals(codigoLibroNuevo)){
+            return false;
+        }
+        return true;
+    }
     
     
     

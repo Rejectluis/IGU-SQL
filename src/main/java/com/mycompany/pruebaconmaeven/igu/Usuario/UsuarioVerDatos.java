@@ -175,7 +175,7 @@ public class UsuarioVerDatos extends javax.swing.JFrame implements IColeccion{
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-//        cargartTabla(tablaUsuario);
+
     }//GEN-LAST:event_formWindowActivated
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
@@ -183,9 +183,8 @@ public class UsuarioVerDatos extends javax.swing.JFrame implements IColeccion{
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        boolean editarValido = validarFilas();
         
-        if(!editarValido){
+        if(!validarFilas()){
             return;
         }
         int idUsuario = Integer.parseInt(String.valueOf(tablaUsuario.getValueAt(tablaUsuario.getSelectedRow(), 0)));
@@ -197,13 +196,12 @@ public class UsuarioVerDatos extends javax.swing.JFrame implements IColeccion{
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        boolean editarValido = validarFilas();
-        
-        if(!editarValido){
+
+        if(!validarFilas()){
             return;
         }
         
-        
+        EliminarRegistroYRecargarPantalla();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -260,7 +258,6 @@ public class UsuarioVerDatos extends javax.swing.JFrame implements IColeccion{
             }
         }
         //Se setea la tabla del Jframe con la tabla 
-         
         tablaUsuario.setModel(modeloTabla);
     }
 
@@ -275,11 +272,11 @@ public class UsuarioVerDatos extends javax.swing.JFrame implements IColeccion{
                 
         if (confirmar == JOptionPane.YES_OPTION){
             try {
-//                controller.eliminarUsuario(idUsuario);
+                controller.eliminarUsuario(idUsuario);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, 
                 ex.getMessage(), // Captura el mensaje lanzado ("ERROR: El libro... tiene préstamos asociados.")
-                "Error al Eliminar Usuario", JOptionPane.ERROR_MESSAGE);
+                "Error al eliminar usuario", JOptionPane.ERROR_MESSAGE);
                     
                 Logger.getLogger(UsuarioVerDatos.class.getName()).log(Level.SEVERE, "Error en la eliminación del usuario ID: " + idUsuario, ex);
             } 

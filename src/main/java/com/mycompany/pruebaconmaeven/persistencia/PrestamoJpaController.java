@@ -13,6 +13,7 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.swing.JOptionPane;
 
 
 public class PrestamoJpaController implements Serializable {
@@ -143,13 +144,10 @@ public class PrestamoJpaController implements Serializable {
             consulta.setParameter("idLibro", idLibro);
             
             Long count = consulta.getSingleResult();
-            
             return count > 0;
-            
         } catch (Exception e) {
-            System.err.println("Error al verificar préstamos en PrestamoJpaController: " + e.getMessage());
-            
-            return true; 
+            JOptionPane.showMessageDialog(null, "Error al consultar existencia del prestamp: " + e.getMessage(), "Error de Persistencia", JOptionPane.ERROR_MESSAGE);
+            return false; 
         } finally {
             if (em != null) {
                 em.close();

@@ -7,6 +7,7 @@ import com.mycompany.pruebaconmaeven.igu.Usuario.GestionUsuario;
 import com.mycompany.pruebaconmaeven.logica.IControladora;
 
 
+
 public class Principal extends javax.swing.JFrame implements IMostrar{
     
     private final IControladora controller;
@@ -14,6 +15,7 @@ public class Principal extends javax.swing.JFrame implements IMostrar{
     public Principal(IControladora controller) {
         initComponents();
         this.controller = controller;
+//        this.setExtendedState(MAXIMIZED_BOTH);
     }
 
     @SuppressWarnings("unchecked")
@@ -115,7 +117,7 @@ public class Principal extends javax.swing.JFrame implements IMostrar{
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGestionLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionLibrosActionPerformed
-        A_GestionLibros gestiLibro = new A_GestionLibros();
+        A_GestionLibros gestiLibro = new A_GestionLibros(this.controller);
         mostrarYCentrarPantalla(gestiLibro);
         
     }//GEN-LAST:event_btnGestionLibrosActionPerformed

@@ -328,7 +328,7 @@ public class UsuarioModificarDatos extends javax.swing.JFrame implements IMostra
         
         UsuarioVerDatos userRegistros = new UsuarioVerDatos(this.controller);
         mostrarYCentrarPantalla(userRegistros);
-        regresar();
+        this.dispose();
         
     }//GEN-LAST:event_btnGuardarActionPerformed
 
