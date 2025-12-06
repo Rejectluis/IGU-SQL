@@ -1,8 +1,7 @@
 
 package com.mycompany.pruebaconmaeven.igu;
 
-import com.mycompany.pruebaconmaeven.logica.ControladoraLogica;
-import com.mycompany.pruebaconmaeven.logica.Libro;
+import com.mycompany.pruebaconmaeven.logica.IGuiLibro;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.logging.Level;
@@ -14,12 +13,10 @@ import javax.swing.table.DefaultTableModel;
 
 public class A_ColeccionLibro extends javax.swing.JFrame implements IColeccion{
     
-    ControladoraLogica controller=null;
-
-    public A_ColeccionLibro() {
-        controller = new ControladoraLogica();
+    private final IGuiLibro controller;
+    public A_ColeccionLibro(IGuiLibro controller) {
         initComponents();
-        
+        this.controller = controller;
     }
 
     @SuppressWarnings("unchecked")
@@ -212,35 +209,23 @@ public class A_ColeccionLibro extends javax.swing.JFrame implements IColeccion{
     }//GEN-LAST:event_formWindowOpened
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        if(tablaLibro.getRowCount()>0){
-            if(tablaLibro.getSelectedRow() != -1){
-                int id_libro = Integer.parseInt(String.valueOf(tablaLibro.getValueAt(tablaLibro.getSelectedRow(), 0)));
-                
-                A_ModificarDatos pantallaModif = new A_ModificarDatos(id_libro);
-                mostrarYCentrarPantalla(pantallaModif);
-                
-                this.dispose();  
-            }else{
-                JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            }
-        }else{
-            JOptionPane.showMessageDialog(null, "La tabla de libros está vacía.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            
+        if(!validarFilas()){
+            return;
         }
+        int id_libro = Integer.parseInt(String.valueOf(tablaLibro.getValueAt(tablaLibro.getSelectedRow(), 0)));
+                
+        A_ModificarDatos pantallaModif = new A_ModificarDatos(id_libro, this.controller);
+        mostrarYCentrarPantalla(pantallaModif);   
+        this.dispose();  
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        if (tablaLibro.getRowCount() >0){ //cuenta cuántas filas hay -> para eliminar una fila debe haber al menos una fila, por eso el getRowCount()
-            if(tablaLibro.getSelectedRow() !=-1){ // selecciona la fila que va a escoger. Se pone != -1 porque la primera fila es 0, las que siguen son 1, 2... n, de modo que -1 significa ninguna fila. Es decir, verifica que haya selecciona una fila 
-                
-                EliminarRegistroYRecargarPantalla();
-                
-            }else{
-                JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            }
-        }else{
-            JOptionPane.showMessageDialog(null, "La tabla de libros está vacía.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+
+        if(!validarFilas()){
+            return;
         }
+        EliminarRegistroYRecargarPantalla();
+    
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void BuscarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarLibroActionPerformed
@@ -296,16 +281,13 @@ public class A_ColeccionLibro extends javax.swing.JFrame implements IColeccion{
         modeloTabla.setColumnIdentifiers(titulos); // se setea el nombre de las columnas
         
         //Cargar la tabla
-        List<Libro> libros = controller.traerListaLibros();
+        List<Object[]> libros = controller.mostrarRegistrosDeLibros();
         
         //Recorrer la lista y mostrar cada atributo del registro de la bd
         if (libros!=null){
             
-            for (Libro lib: libros){
-                Object [] objeto = {lib.getId_libro(),lib.getTitulo(),lib.getAutor(),lib.getAnno_publicacion(),lib.getEjemplareslist().size(),lib.getCodigo_libro()};
-                if(lib.getEstado() == 1){
-                    modeloTabla.addRow(objeto);
-                }     
+            for (Object[] lib: libros){
+                modeloTabla.addRow(lib);
             }
         }
         //Se setea la tabla del Jframe con la tabla 
@@ -336,4 +318,20 @@ public class A_ColeccionLibro extends javax.swing.JFrame implements IColeccion{
     }
     
     //-------------------------------------------------------------------------------------------------------------------------------------------------------  
+        public boolean validarFilas(){
+        if(tablaLibro.getRowCount()<1){
+            JOptionPane.showMessageDialog(null, "La tabla de libros está vacía.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        
+        if(tablaLibro.getSelectedRow()==-1){
+            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+    
+    
+    
+    
 }

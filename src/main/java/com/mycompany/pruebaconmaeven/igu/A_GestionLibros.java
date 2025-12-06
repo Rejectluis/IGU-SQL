@@ -3,12 +3,15 @@ package com.mycompany.pruebaconmaeven.igu;
 
 import com.mycompany.pruebaconmaeven.Interfaces.IRetornar;
 import com.mycompany.pruebaconmaeven.Interfaces.IMostrar;
+import com.mycompany.pruebaconmaeven.logica.IControladora;
+import com.mycompany.pruebaconmaeven.logica.IGuiLibro;
 
 public class A_GestionLibros extends javax.swing.JFrame implements IMostrar, IRetornar{
 
-
-    public A_GestionLibros() {
+    private final IControladora controller;
+    public A_GestionLibros(IControladora controller) {
         initComponents();
+        this.controller = controller;
     }
 
     @SuppressWarnings("unchecked")
@@ -21,6 +24,8 @@ public class A_GestionLibros extends javax.swing.JFrame implements IMostrar, IRe
         btnNuevoLibro = new javax.swing.JButton();
         btnColeccionLibros = new javax.swing.JButton();
         btnRegresarMenu = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,7 +77,7 @@ public class A_GestionLibros extends javax.swing.JFrame implements IMostrar, IRe
                 .addComponent(btnColeccionLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnRegresarMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(189, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -80,20 +85,31 @@ public class A_GestionLibros extends javax.swing.JFrame implements IMostrar, IRe
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(191, 191, 191)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(183, 183, 183)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(156, 156, 156)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
+                            .addComponent(jSeparator2))))
+                .addContainerGap(156, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(39, 39, 39)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(81, 81, 81))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -111,7 +127,7 @@ public class A_GestionLibros extends javax.swing.JFrame implements IMostrar, IRe
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoLibroActionPerformed
-        A_NuevoLibro lb = new A_NuevoLibro();
+        A_NuevoLibro lb = new A_NuevoLibro((IGuiLibro)this.controller);
         mostrarYCentrarPantalla(lb);
         
     }//GEN-LAST:event_btnNuevoLibroActionPerformed
@@ -121,7 +137,7 @@ public class A_GestionLibros extends javax.swing.JFrame implements IMostrar, IRe
     }//GEN-LAST:event_btnRegresarMenuActionPerformed
 
     private void btnColeccionLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColeccionLibrosActionPerformed
-        A_ColeccionLibro colec = new A_ColeccionLibro();
+        A_ColeccionLibro colec = new A_ColeccionLibro((IGuiLibro)this.controller);
         mostrarYCentrarPantalla(colec);
         
     }//GEN-LAST:event_btnColeccionLibrosActionPerformed
@@ -134,6 +150,8 @@ public class A_GestionLibros extends javax.swing.JFrame implements IMostrar, IRe
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
     
     //----------------------------------------------------------------  Interfaz IPantalla  ----------------------------------------------------------------  

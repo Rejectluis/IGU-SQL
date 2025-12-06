@@ -40,6 +40,17 @@ public class InversionDependency {
         return validadorStrings.validar(autor, codigoLibro, ejemplares, paginas, publicacion, titulo);                                          // -> El método validarDatosLibro delega la tarea real de validación al objeto LibroValidador. Este método ejecuta toda la lógica de validación de formato/rango y devuelve el resultado
     }
     
+    public boolean validarCodigoLibro(String codigoLibroOriginal, String codigoLibroNuevo) {
+        IValidador<Libro> validadorGenerico = this.getLibroValidador();
+        if(!(validadorGenerico instanceof LibroValidador )){
+            //showInformativeMessage("ERROR: No se pudo cargar el validador de Libro.", "Error", "Error de inyección");
+            return false;
+        }
+        
+        LibroValidador validadorCodigo = (LibroValidador) validadorGenerico;
+        return validadorCodigo.validarCodigoLibro(codigoLibroOriginal, codigoLibroNuevo);
+    }
+    
     //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
     
     //---------------------------------------------------------------- USUARIO -> Métodos auxiliares para validación de datos -------------------------------------------------------------------------------------//
@@ -76,6 +87,7 @@ public class InversionDependency {
         UsuarioValidador validarEmail = (UsuarioValidador) validadorDeDatosUnicos;
         return validarEmail.validarDatoUniqueEmail(emailOriginal, emailNuevo);
     }
+
     
 
     

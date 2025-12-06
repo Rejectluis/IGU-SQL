@@ -3,21 +3,21 @@ package com.mycompany.pruebaconmaeven.igu;
 
 import com.mycompany.pruebaconmaeven.Interfaces.IResetear;
 import com.mycompany.pruebaconmaeven.Interfaces.IRetornar;
-import com.mycompany.pruebaconmaeven.logica.ControladoraLogica;
-import com.mycompany.pruebaconmaeven.logica.Libro;
 import javax.swing.JFrame;
 import com.mycompany.pruebaconmaeven.Interfaces.IMostrar;
+import com.mycompany.pruebaconmaeven.logica.IGuiLibro;
 
 
 public class A_ModificarDatos extends javax.swing.JFrame implements IMostrar,IResetear,IRetornar {
     
-    ControladoraLogica controller = new ControladoraLogica();
-    int idLibro;
-    Libro libro;
+    private final IGuiLibro controller;
+    private int idLibro;
     
-    public A_ModificarDatos(int idLibro) {
+    public A_ModificarDatos(int idLibro, IGuiLibro controller) {
         initComponents();
-        cargarDatos(idLibro);
+        this.idLibro = idLibro;
+        this.controller = controller;      
+        cargarDatos(this.idLibro);
         
     }
 
@@ -261,9 +261,9 @@ public class A_ModificarDatos extends javax.swing.JFrame implements IMostrar,IRe
         String titulo = txtTituloLibro.getText();
         String ejemplares = txtEjemplares.getText();
         
-        controller.guardarModificacion(libro, autor, codigoLibro, ejemplares, paginas, publicacion, titulo);
+        controller.guardarModificacionLibro(this.idLibro, autor, codigoLibro, ejemplares, paginas, publicacion, titulo);
         
-        A_ColeccionLibro pantalla = new A_ColeccionLibro();
+        A_ColeccionLibro pantalla = new A_ColeccionLibro(this.controller);
         mostrarYCentrarPantalla(pantalla);
         this.dispose();
         
@@ -308,19 +308,16 @@ public class A_ModificarDatos extends javax.swing.JFrame implements IMostrar,IRe
         dispose();
     }
 
-
-    
     //-------------------------------------------------------------------------------------------------------------------------------------------------------  
     
     private void cargarDatos(int idLibro) {
-         this.libro = controller.traerLibro(idLibro);
+        Object[] datoLibro = this.controller.pasarDatosDelLibro(idLibro);
         
-        txtAutorLibro.setText(libro.getAutor());
-        txtCodigoLibro.setText(String.valueOf(libro.getCodigo_libro()));
-        txtEjemplares.setText(String.valueOf(libro.getEjemplareslist().size()));
-        txtNro_paginas.setText(String.valueOf(libro.getNro_paginas()));
-        txtPublicacionLibro.setText(String.valueOf(libro.getAnno_publicacion()));
-        txtTituloLibro.setText(libro.getTitulo());
+        txtAutorLibro.setText((String)datoLibro[0]);
+        txtCodigoLibro.setText(String.valueOf(datoLibro[1]));
+        txtEjemplares.setText(String.valueOf(datoLibro[2]));
+        txtNro_paginas.setText(String.valueOf(datoLibro[3]));
+        txtPublicacionLibro.setText(String.valueOf(datoLibro[4]));
+        txtTituloLibro.setText((String)datoLibro[5]);
     }
-
 }

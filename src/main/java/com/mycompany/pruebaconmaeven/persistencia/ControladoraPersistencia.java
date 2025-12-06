@@ -77,10 +77,7 @@ public class ControladoraPersistencia {
             controller2.edit(libro);
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-        
+        } 
     }
 
     public Libro traerLibro(int id) {
@@ -93,6 +90,10 @@ public class ControladoraPersistencia {
         ArrayList<Libro> listaLibros = new ArrayList<Libro> (libroLista);
         
         return listaLibros;
+    }
+    
+    public boolean codigoLibroExisteBD(int codigoLibro) {
+        return controller2.codigoLibroExsiteEnBD(codigoLibro);
     }
     
     
@@ -187,5 +188,6 @@ public class ControladoraPersistencia {
     public boolean verificarLibroPrestado(int idLibro){
         return controller4.libroTienePrestamos(idLibro);
     }
+
 
 }

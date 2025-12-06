@@ -12,6 +12,7 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.swing.JOptionPane;
 
 public class LibroJpaController implements Serializable {
 
@@ -163,4 +164,28 @@ public class LibroJpaController implements Serializable {
         return libros;
     }
     */ 
+    
+    public boolean codigoLibroExsiteEnBD(int codigoLibro){
+        EntityManager em = getEntityManager();
+        Long count =0L;
+        
+        try {
+            String jpql = "SELECT COUNT(l) FROM Libro l JOIN WHERE l.codigoLibro = :codigoRegis";
+            TypedQuery<Long> consulta = em.createQuery(jpql,Long.class);
+            consulta.setParameter("codigoRegis", codigoLibro);
+
+            count = consulta.getSingleResult();
+            return count>0;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al consultar existencia del libro: " + e.getMessage(), "Error de Persistencia", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }finally {
+            if (em != null) {
+                em.close();
+            }
+        }   
+    }
+
+    
+    
 }

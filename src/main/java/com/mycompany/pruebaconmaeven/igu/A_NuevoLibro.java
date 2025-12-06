@@ -2,14 +2,14 @@ package com.mycompany.pruebaconmaeven.igu;
 
 import com.mycompany.pruebaconmaeven.Interfaces.IResetear;
 import com.mycompany.pruebaconmaeven.Interfaces.IRetornar;
-import com.mycompany.pruebaconmaeven.logica.ControladoraLogica;
+import com.mycompany.pruebaconmaeven.logica.IGuiLibro;
 
 public class A_NuevoLibro extends javax.swing.JFrame implements IResetear, IRetornar {
 
-    ControladoraLogica controller = new ControladoraLogica();
-
-    public A_NuevoLibro() {
+    private final IGuiLibro controller;
+    public A_NuevoLibro(IGuiLibro controller) {
         initComponents();
+        this.controller = controller;
     }
 
     @SuppressWarnings("unchecked")
@@ -249,8 +249,8 @@ public class A_NuevoLibro extends javax.swing.JFrame implements IResetear, IReto
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         controller.guardarLibro(
-                txtAutorLibro.getText(), txtCodigoLibro.getText(), txtEjemplares.getText(),
-                txtNro_paginas.getText(), txtPublicacionLibro.getText(), txtTituloLibro.getText());
+            txtAutorLibro.getText(), txtCodigoLibro.getText(), txtEjemplares.getText(),
+            txtNro_paginas.getText(), txtPublicacionLibro.getText(), txtTituloLibro.getText());
     }//GEN-LAST:event_btnGuardarActionPerformed
 
 
