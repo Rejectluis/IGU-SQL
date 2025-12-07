@@ -15,10 +15,12 @@ import javax.swing.table.DefaultTableModel;
 public class UsuarioVerDatos extends javax.swing.JFrame implements IColeccion{
     
     private final IGuiUsuario controller;
-    
     public UsuarioVerDatos(IGuiUsuario controller) {
         initComponents();
         this.controller = controller;
+        
+        System.out.println("=== CONSTRUCTOR UsuarioVerDatos ===");
+        System.out.println("Controller: " + controller);
     }
 
 
@@ -184,7 +186,9 @@ public class UsuarioVerDatos extends javax.swing.JFrame implements IColeccion{
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-
+        System.out.println("=== WINDOW OPENED ===");
+        cargartTabla(tablaUsuario);
+        
     }//GEN-LAST:event_formWindowActivated
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
@@ -246,6 +250,7 @@ public class UsuarioVerDatos extends javax.swing.JFrame implements IColeccion{
 
     @Override
     public void cargartTabla(JTable tablaUsuario) {
+        System.out.println("=== CARGANDO TABLA ===");
         // Se define el modelo de tabla donde se presentarán los registros
         DefaultTableModel modeloTabla = new DefaultTableModel(){ 
             // se establece que las filas y columnas no sean editables
@@ -259,7 +264,9 @@ public class UsuarioVerDatos extends javax.swing.JFrame implements IColeccion{
         String titulos [] = {"id","Nombre","Apellido paterno","Apellido materno","DNI","Email","Telefono"};
         modeloTabla.setColumnIdentifiers(titulos); // se setea el nombre de las columnas
         //Cargar la tabla
-        List<Object[]> listaRegistros = this.controller.mostrarRegistrosDeUsuario();
+        List<Object[]> listaRegistros = controller.mostrarRegistrosDeUsuario();
+        System.out.println("Registros encontrados: " + (listaRegistros != null ? listaRegistros.size() : "null"));
+
         
         //Recorrer la lista y mostrar cada atributo del registro de la bd
         if (listaRegistros!=null){
@@ -309,5 +316,7 @@ public class UsuarioVerDatos extends javax.swing.JFrame implements IColeccion{
         }
         return true;
     }
+    
+
     
 }
