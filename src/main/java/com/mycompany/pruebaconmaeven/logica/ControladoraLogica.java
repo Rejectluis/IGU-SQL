@@ -193,6 +193,7 @@ public class ControladoraLogica implements IControladora{
         libroOriginal.setAnno_publicacion(Integer.parseInt(publicacionNueva));
         libroOriginal.setTitulo(tituloNuevo);
         
+        controlPersis.editarLibro(libroOriginal);
         controlPersis.modificarEjemplar(libroOriginal, ejemplaresNuevo);
         showInformativeMessage("!Se actualizó el libro correctamente!", "Info", "¡Actualización de datos exitosa!");
 
@@ -255,6 +256,10 @@ public class ControladoraLogica implements IControladora{
       if(!(this.dependencias.validarDatosUsuario(ape_materno, ape_paterno, dni, email, nombre, telefono))){
         return; 
       }
+      if(controlPersis.consultarDniEnBD(dni)){
+            showInformativeMessage("El DNI ingresado ya está registrado", "Error", "Error en el ingreso de datos");
+            return;
+        }
 
       Usuario user = new Usuario(dni, nombre, ape_paterno, ape_materno, email, telefono);
       crearUsuario(user);

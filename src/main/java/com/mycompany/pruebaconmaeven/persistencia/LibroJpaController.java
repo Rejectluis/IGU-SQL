@@ -170,7 +170,7 @@ public class LibroJpaController implements Serializable {
         Long count =0L;
         
         try {
-            String jpql = "SELECT COUNT(l) FROM Libro l JOIN WHERE l.codigoLibro = :codigoRegis";
+            String jpql = "SELECT COUNT(l) FROM Libro l WHERE l.codigo_libro = :codigoRegis";
             TypedQuery<Long> consulta = em.createQuery(jpql,Long.class);
             consulta.setParameter("codigoRegis", codigoLibro);
 
