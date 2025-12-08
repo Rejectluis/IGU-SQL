@@ -89,6 +89,7 @@ public class UsuarioJpaController implements Serializable {
     }
 
     public List<Usuario> findUsuarioEntities() {
+
         return findUsuarioEntities(true, -1, -1);
     }
 
@@ -102,6 +103,7 @@ public class UsuarioJpaController implements Serializable {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Usuario.class));
             Query q = em.createQuery(cq);
+ b 
             if (!all) {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);

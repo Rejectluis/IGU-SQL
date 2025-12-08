@@ -154,7 +154,7 @@ public class ControladoraLogica implements IControladora{
     /*
     *   El método se encarga de guardar los datos del libro en la base de datos. Al empezar, el primer if se encarga de verificar
     *   que los strings enviados desde la interfaz gráfica de «A_NuevoLibro» sean datos válidos. Si no son válidos se termina
-    *   el ciclo de vida del método. Lo mismo sucede con el método "GuardarModificación".
+    *   el ciclo de vida del método. Lo mismo sucede con el método override GuardarModificaciónLibro.
     */
     @Override
     public void guardarLibro(String autor, String codigoLibro, String ejemplares, String paginas, String publicacion, String titulo) {        
@@ -168,7 +168,7 @@ public class ControladoraLogica implements IControladora{
         }
         
         crearLibroYEjemplares(new Libro(Integer.parseInt(codigoLibro), titulo, autor, Integer.parseInt(publicacion), Integer.parseInt(paginas)),Integer.parseInt(ejemplares));
-        showInformativeMessage("¡Se guardó correctamente con inyeccion!", "Info", "¡Guardado exitoso!");
+        showInformativeMessage("¡Libro guardado correctamente!", "Info", "¡Guardado exitoso!");
     }
     
     @Override
@@ -230,6 +230,12 @@ public class ControladoraLogica implements IControladora{
         return datosTabla;
     }
     
+    /*
+    *   El método se encarga de traer los datos del libro seleccionado en la interfaz «A_Coleccion» a la interfaz de
+    *   «A_ModificarDatos» Se retorna un object[] para que la clase «A_ModificarDatos» no esté relacionada la clase 
+    *    Libro directamente.
+    */
+    
     @Override
     public Object[] pasarDatosDelLibro(int idLibro) {
         
@@ -251,13 +257,25 @@ public class ControladoraLogica implements IControladora{
     
     //----------------------------------------------------------- igu.Usuario ------------------------------------------------------------------------------------------------------------------------------------//
     
+    /*
+    *   El método es análogo al override de cargarLibro. Este encarga de guardar los datos del usuario en la base de datos.
+    *   Al empezar, el primer if se encarga de verificar que los strings enviados (desde la interfaz gráfica de «NuevoUsuario»)
+    *   sean datos válidos. Si no son válidos se termina el ciclo de vida del método. Lo mismo sucede con el método 
+    *   "GuardarModificación".
+    */
+
     @Override
     public void cargarUsuario(String ape_materno, String ape_paterno, String dni, String email, String nombre, String telefono) {
-      if(!(this.dependencias.validarDatosUsuario(ape_materno, ape_paterno, dni, email, nombre, telefono))){
-        return; 
-      }
-      if(controlPersis.consultarDniEnBD(dni)){
+        if(!(this.dependencias.validarDatosUsuario(ape_materno, ape_paterno, dni, email, nombre, telefono))){
+            return; 
+        }
+        
+        if(controlPersis.consultarDniEnBD(dni)){
             showInformativeMessage("El DNI ingresado ya está registrado", "Error", "Error en el ingreso de datos");
+            return;
+        }
+        if(controlPersis.consultarEmailEnBD(email)){
+            showInformativeMessage("El email ingresado ya está registrado", "Error", "Error en el ingreso de datos");
             return;
         }
 
@@ -303,14 +321,19 @@ public class ControladoraLogica implements IControladora{
         showInformativeMessage("¡Usuario editado con éxito!", "Info","!Actualización de datos ralizada!");
     }
     
-        @Override
+    /*
+    *   Análogamente al método override de mostrarRegistrosDeLibros, este encarga de traer los registros de usuario 
+    *   para mostrarlos en la seccion de Coleccion de usuarios. Se retorna una lista de tipo Object[] para que la clase
+    *   de la interfaz gráfica («VerDatosUusario») no esté relacionada con la clase Usuario.
+    */
+    @Override
     public List<Object[]> mostrarRegistrosDeUsuario() {
-        List<Usuario> user = this.controlPersis.traerListaUsuarios();    // traigo los datos desde la BD
-        List<Object[]> datosTabla= new ArrayList<>();               // creo un arraylist para almacenarlos aquí
+        List<Usuario> user = this.controlPersis.traerListaUsuarios();       
+        List<Object[]> datosTabla= new ArrayList<>();               
         
-        if(user !=null){                                             //Verifico que la lista no sea null
+        if(user !=null){                                             
             for(Usuario e: user){
-                if(e.getEstado()==1){                               //Si el libro está disponible lo agrego a la lista de objetos
+                if(e.getEstado()==1){                               
                     Object[] registros = {
                         e.getId_usuario(), 
                         e.getNombre(),
@@ -320,13 +343,20 @@ public class ControladoraLogica implements IControladora{
                         e.getEmail(),
                         e.getTelefono()
                     };
-                    datosTabla.add(registros);                          //Se agregan las instancias a la lista de objetos
+                    datosTabla.add(registros);                          
                 }
             }
         }
         return datosTabla;
     }
-
+        
+    /*
+    *   El método funciona de igual manera que el método de pasarDatosDelLibro. Este se encarga de buscar los datos del usuario  
+    *   seleccionado en la interfaz de coleccion («VerDatosUsuario»)y pasarlos a la interfaz de edición («ModificarDatosUsuario»). 
+    *   También se retorna un Object [] para que ninguna clase de la interfaz esté directamente relacionada con las clases
+    *    entidades (Libro, Usuario, Prestamo, etc).
+    */
+    
     @Override
     public Object[] pasarDatosDelUsuario(int idUsuario) {
         Usuario user = controlPersis.traerUsuario(idUsuario);

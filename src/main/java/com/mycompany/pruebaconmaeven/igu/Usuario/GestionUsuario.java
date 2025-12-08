@@ -126,9 +126,8 @@ public class GestionUsuario extends javax.swing.JFrame implements IMostrar, IRet
     }//GEN-LAST:event_btnRegresarMenuActionPerformed
 
     private void btnColeccionUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColeccionUsuariosActionPerformed
-        UsuarioVerDatos registrosUser = new UsuarioVerDatos(this.controller);
-        mostrarYCentrarPantalla(registrosUser);
-        
+        UsuarioVerDatos registrosUser = new UsuarioVerDatos((IGuiUsuario)this.controller);
+        mostrarYCentrarPantalla(registrosUser);  
     }//GEN-LAST:event_btnColeccionUsuariosActionPerformed
 
 
