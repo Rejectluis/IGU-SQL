@@ -103,7 +103,7 @@ public class UsuarioJpaController implements Serializable {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Usuario.class));
             Query q = em.createQuery(cq);
- b 
+            q.setHint("javax.persistence.cache.retrieveMode", "BYPASS");
             if (!all) {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);
