@@ -51,7 +51,6 @@ public class ControladoraLogica implements IControladora{
         }
     }
     
-    
     @Override
     public void eliminarLibro(int idLibro){
         if(controlPersis.verificarLibroPrestado(idLibro)){
@@ -72,7 +71,6 @@ public class ControladoraLogica implements IControladora{
     }
     
     public Libro traerLibro(int id){
-        
         return controlPersis.traerLibro(id);
     }
     
@@ -148,9 +146,10 @@ public class ControladoraLogica implements IControladora{
     //                                                       Interfaces Gráficas                                                                                                                                //
     //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
         
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+    //                                                              igu.Libro                                                                                                                                   //
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
     
-    //----------------------------------------------------------- igu.Libro ------------------------------------------------------------------------------------------------------------------------------------//
-   
     /*
     *   El método se encarga de guardar los datos del libro en la base de datos. Al empezar, el primer if se encarga de verificar
     *   que los strings enviados desde la interfaz gráfica de «A_NuevoLibro» sean datos válidos. Si no son válidos se termina
@@ -162,7 +161,7 @@ public class ControladoraLogica implements IControladora{
             return;
         }
         
-        if(this.controlPersis.codigoLibroExisteBD(Integer.parseInt(codigoLibro))){
+        if(this.controlPersis.existeCodigoLibroEnBD(Integer.parseInt(codigoLibro))){
             showInformativeMessage("El código del libro ingresado ya está registrado", "Error", "Error en el ingreso de datos");
             return;
         }
@@ -181,7 +180,7 @@ public class ControladoraLogica implements IControladora{
         String codigoLibroOriginal = String.valueOf(libroOriginal.getCodigo_libro());
         
         if(this.dependencias.validarCodigoLibro(codigoLibroOriginal, codigoLibroNuevo)){
-            if(this.controlPersis.codigoLibroExisteBD(Integer.parseInt(codigoLibroNuevo))){
+            if(this.controlPersis.existeCodigoLibroEnBD(Integer.parseInt(codigoLibroNuevo))){
                 showInformativeMessage("El código del libro ingresado ya está registrado", "Error", "Error en el ingreso de datos");
                 return;
             }
@@ -255,8 +254,10 @@ public class ControladoraLogica implements IControladora{
         return null;
     }
     
-    //----------------------------------------------------------- igu.Usuario ------------------------------------------------------------------------------------------------------------------------------------//
-    
+    //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+    //                                                              igu.Usuario                                                                                                                                   //
+    //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
     /*
     *   El método es análogo al override de cargarLibro. Este encarga de guardar los datos del usuario en la base de datos.
     *   Al empezar, el primer if se encarga de verificar que los strings enviados (desde la interfaz gráfica de «NuevoUsuario»)
@@ -270,7 +271,7 @@ public class ControladoraLogica implements IControladora{
             return; 
         }
         
-        if(controlPersis.consultarDniEnBD(dni)){
+        if(controlPersis.existeUsuarioEnBD(dni)){
             showInformativeMessage("El DNI ingresado ya está registrado", "Error", "Error en el ingreso de datos");
             return;
         }
@@ -297,7 +298,7 @@ public class ControladoraLogica implements IControladora{
         String emailOriginal = usuarioOriginal.getEmail();
         
         if(this.dependencias.validarDni(dniOriginal, dniNuevo)){                                                              // -> true: significa que sí se desea editar el dni
-            if(controlPersis.consultarDniEnBD(dniNuevo)){
+            if(controlPersis.existeUsuarioEnBD(dniNuevo)){
                 showInformativeMessage("El DNI ingresado ya está registrado", "Error", "Error en el ingreso de datos");
                 return;
             }
@@ -376,6 +377,37 @@ public class ControladoraLogica implements IControladora{
     }
     
     
+    //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+    //                                                              igu.Prestamo                                                                                                                                   //
+    //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+    
+    @Override
+    public void crearPrestamo(String dni, String codigoLibro) {
+        if(!this.dependencias.validarDni(dni) || !this.dependencias.validarCodigo(codigoLibro)){
+            return;
+        }
+        
+        if(!controlPersis.existeUsuarioEnBD(dni)){
+            showInformativeMessage("El usuario no está registrado en el sistema", "Error", "Usuario inexistente");
+            return;
+        }
+        if(!(controlPersis.existeCodigoLibroEnBD(Integer.parseInt(codigoLibro)))){
+            showInformativeMessage("El código del libro no está registrado en el sistema", "Error", "Libro inexistente");
+            return;
+        }
+        if(controlPersis.UsuarioSuperaLimitePrestamos(controlPersis.traerIdPorDni(dni))){
+            showInformativeMessage("El usuario ha alcanzado el máximo de prestamos (5)", "Info", "Prestamos disponibles alcanzados");
+            return;
+        }
+        
+        if(!controlPersis.LibroTieneEjemplaresDisponibles(codigoLibro)){
+            showInformativeMessage("El libro no tiene ejemplares disponibles", "Info", "Prestamos disponibles alcanzados");
+        }
+        
+        
+        
+    }
+
     
     
     
@@ -403,9 +435,7 @@ public class ControladoraLogica implements IControladora{
     
     
     
-    
-    
-    //----------------------------------------------------------------------- Métodos de mensajes (información, aleta, etc)-----------------------------------------------
+    //----------------------------------------------------------------------- Métodos auxiliares (información, alerta, etc)-----------------------------------------------
     
     public void showInformativeMessage(String message, String type, String title){
         JOptionPane opti = new JOptionPane(message);
@@ -420,6 +450,7 @@ public class ControladoraLogica implements IControladora{
         dialog.setAlwaysOnTop(true);
         dialog.setVisible(true);
     }
+
 
 
 

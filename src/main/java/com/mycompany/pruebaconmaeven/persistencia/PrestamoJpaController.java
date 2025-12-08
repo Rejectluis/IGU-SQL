@@ -154,5 +154,26 @@ public class PrestamoJpaController implements Serializable {
             }
         }
     }
+    
+    /*
+    *   Este método evalúa si un usuario está apto para poder pedir un préstamo. 
+    *   Retorna true si el usuario tiene menos de 5 prestamos, falso si son más 
+    *   de 5 prestamos activos los que tiene.
+    */
+    public boolean UsuarioSuperaLimitePrestamos (int idUsuarioRegis){
+        EntityManager em = getEntityManager();
+        Long totalPrestamos =0L;
+        
+        try {
+            Query query = em.createQuery("SELECT COUNT(p) FROM Prestamo p WHERE p.usuario.id_usuario = :idUsuarioRegis AND p.estado =1");
+            query.setParameter("idUsuarioRegis", idUsuarioRegis);
+            totalPrestamos = (Long)query.getSingleResult();
+        } catch (Exception e) {
+            throw new RuntimeException("Error en la persistencia al contar préstamos activos para el ID " + idUsuarioRegis, e);
+        }finally{
+            em.close();
+        }
+        return totalPrestamos<5;
+    }
   
 }

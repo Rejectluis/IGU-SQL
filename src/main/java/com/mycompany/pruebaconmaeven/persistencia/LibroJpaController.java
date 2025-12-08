@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
@@ -185,6 +186,29 @@ public class LibroJpaController implements Serializable {
                 em.close();
             }
         }   
+    }
+    
+    /*
+    *   Este método retorna el id de un libro con sólo conocer su código.
+    */
+    public Integer traerIdPorCodigoLibro(String codigoLibroRegis) {
+        EntityManager em = getEntityManager();
+        Integer idLibro = null;
+        
+        try {
+            Query query = em.createQuery("SELECT l.id_libro FROM Libro l WHERE l.codigo_libro = :codigoLibroRegis");
+            query.setParameter("codigoLibroRegis", codigoLibroRegis);
+            idLibro = (Integer)query.getSingleResult();
+        } catch (NoResultException e) {
+            idLibro =null;
+        } catch (Exception e){
+            throw new RuntimeException("Error en la persistencia al buscar ID por código: " + codigoLibroRegis, e);
+        }finally{
+            if(em !=null){
+                em.close();
+            }
+        }
+        return idLibro;
     }
 
     

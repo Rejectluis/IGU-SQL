@@ -100,6 +100,15 @@ public class LibroValidador implements IValidador<Libro>{
         }
         return true;
     }
+
+    public boolean validarCodigoLibro(String codigoLibro) {
+        
+        if(codigoLibro.trim().isEmpty() || !codigoLibro.matches("\\d{3}")){                                                                                                                                                                                           
+            showInformativeMessage("ERROR: Formato inválido. El código debe ser de 3 dígitos", "Error", "Error de validación");
+            return false;
+        }
+        return true;
+    }
     
     
     

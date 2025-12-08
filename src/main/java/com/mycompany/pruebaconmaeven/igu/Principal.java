@@ -3,6 +3,7 @@ package com.mycompany.pruebaconmaeven.igu;
 
 import javax.swing.JFrame;
 import com.mycompany.pruebaconmaeven.Interfaces.IMostrar;
+import com.mycompany.pruebaconmaeven.igu.Prestamo.GestionDePrestamos;
 import com.mycompany.pruebaconmaeven.igu.Usuario.GestionUsuario;
 import com.mycompany.pruebaconmaeven.logica.IControladora;
 
@@ -124,7 +125,8 @@ public class Principal extends javax.swing.JFrame implements IMostrar{
     }//GEN-LAST:event_btnGestionLibrosActionPerformed
 
     private void btnGestionPrestamosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionPrestamosActionPerformed
-        // TODO add your handling code here:
+        GestionDePrestamos gestiPres = new GestionDePrestamos(this.controller);
+        mostrarYCentrarPantalla(gestiPres);
     }//GEN-LAST:event_btnGestionPrestamosActionPerformed
 
     private void btnGestionUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionUsuariosActionPerformed

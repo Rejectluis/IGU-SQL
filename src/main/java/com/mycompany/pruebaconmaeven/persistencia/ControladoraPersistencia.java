@@ -51,12 +51,16 @@ public class ControladoraPersistencia {
         return arraylistUsers;
     }
 
-    public boolean consultarDniEnBD(String dniNuevo) {
-        return controller1.existeUsuarioPorDni(dniNuevo);
+    public boolean existeUsuarioEnBD(String dni) {
+        return controller1.existeUsuarioPorDni(dni);
     }
     
     public boolean consultarEmailEnBD(String emailNuevo) {
         return controller1.existeUsuarioPorEmail(emailNuevo);
+    }
+    
+    public Integer traerIdPorDni(String dni) {
+        return controller1.retornarIdPorDni(dni);
     }
     
     //----------------------------------------------------------------     Libro   --------------------------------------------------------
@@ -92,10 +96,13 @@ public class ControladoraPersistencia {
         return listaLibros;
     }
     
-    public boolean codigoLibroExisteBD(int codigoLibro) {
+    public boolean existeCodigoLibroEnBD(int codigoLibro) {
         return controller2.codigoLibroExsiteEnBD(codigoLibro);
     }
     
+    public int traerIdPorCodigoLibro(String codigoLibro) {
+        return controller2.traerIdPorCodigoLibro(codigoLibro);
+    }
     
     //----------------------------------------------------------------    Ejemplar    -------------------------------------------------
 
@@ -154,6 +161,11 @@ public class ControladoraPersistencia {
         }
     }
     
+    public boolean LibroTieneEjemplaresDisponibles(String codigoLibro) {
+        return controller3.LibroTieneEjemplaresDisponibles(codigoLibro);
+    }
+    
+    
     //----------------------------------------------------------------    Prestamo    -------------------------------------------------
 
     public void crearPrestamo(Prestamo prestamo) {
@@ -187,7 +199,14 @@ public class ControladoraPersistencia {
 
     public boolean verificarLibroPrestado(int idLibro){
         return controller4.libroTienePrestamos(idLibro);
+    } 
+
+    public boolean UsuarioSuperaLimitePrestamos(Integer idUsuario) {
+        return controller4.UsuarioSuperaLimitePrestamos(idUsuario);
     }
+
+
+
 
 
 }

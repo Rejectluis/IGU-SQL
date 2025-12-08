@@ -17,11 +17,6 @@ public class InversionDependency {
         this.usuarioValidador = new UsuarioValidador();
     }
 
-    public InversionDependency(IValidador<Libro> libroValidador,IValidador<Usuario> usuarioValidador) {
-        this.libroValidador = new LibroValidador();
-        this.usuarioValidador = new UsuarioValidador();
-    }
-
     public IValidador<Libro> getLibroValidador() {return libroValidador;}
     public IValidador<Usuario> getUsuarioValidador() {return usuarioValidador;}
     
@@ -51,6 +46,17 @@ public class InversionDependency {
         return validadorCodigo.validarCodigoLibro(codigoLibroOriginal, codigoLibroNuevo);
     }
     
+    public boolean validarCodigo(String codigoLibro) {
+        IValidador<Libro> validadorGenerico = this.getLibroValidador();
+        if(!(validadorGenerico instanceof LibroValidador )){
+            //showInformativeMessage("ERROR: No se pudo cargar el validador de Libro.", "Error", "Error de inyección");
+            return false;
+        }
+        
+        LibroValidador validar = (LibroValidador) validadorGenerico;
+        return validar.validarCodigoLibro(codigoLibro);
+    }
+    
     //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
     
     //---------------------------------------------------------------- USUARIO -> Métodos auxiliares para validación de datos -------------------------------------------------------------------------------------//
@@ -76,6 +82,18 @@ public class InversionDependency {
         UsuarioValidador validadorDni = (UsuarioValidador)validadorDeDatosUnicos;
         return validadorDni.validarDatoUniqueDni(dniOriginal, dniNuevo);
     }
+    
+    
+    public boolean validarDni(String dni) {
+        IValidador<Usuario> dniValido = this.getUsuarioValidador();
+        if(!(dniValido instanceof UsuarioValidador)){
+            //showInformativeMessage("ERROR: No se pudo cargar los cambios del email del Usuario.", "Error", "Error de inyección");
+            return false;
+        }
+        
+        UsuarioValidador validarDni = (UsuarioValidador) dniValido;
+        return validarDni.dniValidador(dni);
+    }
 
     public boolean validarEmail(String emailOriginal, String emailNuevo) {
         IValidador<Usuario> validadorDeDatosUnicos = this.getUsuarioValidador();
@@ -87,6 +105,10 @@ public class InversionDependency {
         UsuarioValidador validarEmail = (UsuarioValidador) validadorDeDatosUnicos;
         return validarEmail.validarDatoUniqueEmail(emailOriginal, emailNuevo);
     }
+
+
+
+
 
     
 
