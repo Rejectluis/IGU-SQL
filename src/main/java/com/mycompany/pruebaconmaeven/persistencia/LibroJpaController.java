@@ -102,6 +102,7 @@ public class LibroJpaController implements Serializable {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Libro.class));
             Query q = em.createQuery(cq);
+            q.setHint("javax.persistence.cache.retrieveMode", "BYPASS");
             if (!all) {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);
