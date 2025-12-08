@@ -17,10 +17,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import org.eclipse.persistence.exceptions.ValidationException;
 
-/**
- *
- * @author luisf
- */
+
 public class EjemplarJpaController implements Serializable {
     
     public void showInformativeMessage(String message, String type, String title){
@@ -229,7 +226,23 @@ public class EjemplarJpaController implements Serializable {
         }   
     }
     
-    
+    public boolean LibroTieneEjemplaresDisponibles(String idLibroRegis){
+        EntityManager em = getEntityManager();
+        Long ejemplaresDisponibles = 0L;
+        
+        try {
+            Query query = em.createQuery("SELECT COUNT(e) FROM Ejemplar e WHERE e.libro.id_libro = : idLibroRegis");
+            query.setParameter("idLibroRegis", idLibroRegis);
+            ejemplaresDisponibles = (Long)query.getSingleResult();
+        } catch (Exception e) {
+            throw new RuntimeException("Error al verificar disponibilidad de ejemplares para el ID: " + idLibroRegis, e);
+        }finally{
+            if(em !=null){
+                em.close();
+            }
+        }
+        return ejemplaresDisponibles>0;
+    }
     
     
     

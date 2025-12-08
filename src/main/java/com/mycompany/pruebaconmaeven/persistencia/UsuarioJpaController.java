@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
@@ -174,6 +175,24 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
         return count > 0; 
+    }
+    
+    public Integer retornarIdPorDni(String dniRegis){
+        EntityManager em = getEntityManager();
+        Integer idUsuario =null;
+        
+        try {
+            Query query = em.createQuery("SELECT u.id_usuario FROM Usuario WHERE u.dni = :dniRegis");
+            query.setParameter("dniRegis", dniRegis);
+            idUsuario = (Integer) query.getSingleResult();
+        } catch (NoResultException e) {
+            idUsuario = null;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally{
+            em.close();
+        }
+        return idUsuario;
     }
     
     
