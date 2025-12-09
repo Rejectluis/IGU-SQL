@@ -6,6 +6,7 @@ import com.mycompany.pruebaconmaeven.logica.Libro;
 import com.mycompany.pruebaconmaeven.persistencia.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CacheRetrieveMode;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -184,6 +185,7 @@ public class EjemplarJpaController implements Serializable {
         try {
             Query q = em.createQuery("SELECT e FROM Ejemplar e WHERE e.libro.id_libro = :idLibro");
             q.setParameter("idLibro", idLibro);
+            q.setHint("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
             return q.getResultList();
         } finally {
             em.close();
@@ -221,21 +223,27 @@ public class EjemplarJpaController implements Serializable {
             }
             
             if(eliminados<eAElminar){
-                showInformativeMessage("Solo se pudieron eliminar "+eliminados+" de "+eAElminar+"(Algunos están prstados)", "Info", "Datos parcialmente actualizados");
+                showInformativeMessage("Solo se pudieron eliminar "+eliminados+" de "+eAElminar+" (Algunos están prstados)", "Info", "Datos parcialmente actualizados");
             }
         }   
     }
     
-    public boolean LibroTieneEjemplaresDisponibles(String idLibroRegis){
+    public boolean LibroTieneEjemplaresDisponibles(String codigoLibroRegis){
         EntityManager em = getEntityManager();
         Long ejemplaresDisponibles = 0L;
         
         try {
-            Query query = em.createQuery("SELECT COUNT(e) FROM Ejemplar e WHERE e.libro.id_libro = : idLibroRegis");
-            query.setParameter("idLibroRegis", idLibroRegis);
+            Query query = em.createQuery("SELECT COUNT(e) FROM Ejemplar e WHERE e.libro.codigo_libro = :codigoLibroRegis AND e.estado = 1");
+            
+            int codigoInt = Integer.parseInt(codigoLibroRegis);
+            
+            query.setHint("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
+            em.clear();
+            
+            query.setParameter("codigoLibroRegis",codigoInt);
             ejemplaresDisponibles = (Long)query.getSingleResult();
         } catch (Exception e) {
-            throw new RuntimeException("Error al verificar disponibilidad de ejemplares para el ID: " + idLibroRegis, e);
+            throw new RuntimeException("Error al verificar disponibilidad de ejemplares para el ID: " + codigoLibroRegis, e);
         }finally{
             if(em !=null){
                 em.close();
@@ -245,7 +253,51 @@ public class EjemplarJpaController implements Serializable {
     }
     
     
+    public Ejemplar obtenerPrimerEjemplarDisponible(String codigoLibroRegis){
+        EntityManager em = getEntityManager();
+        
+        try {
+            
+            Query q = em.createQuery("SELECT e FROM Ejemplar e WHERE e.libro.codigo_libro = :codigoLibroRegis AND e.estado = 1");
+            q.setMaxResults(1);
+            
+            int codiInt = Integer.parseInt(codigoLibroRegis);
+            q.setParameter("codigoLibroRegis", codiInt);
+            
+            q.setHint("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
+            em.clear();
+            
+            return (Ejemplar) q.getSingleResult();
+        } catch (javax.persistence.NoResultException e) {
+            return null;
+        }finally{
+            if (em != null){
+                em.close();
+            }
+        }   
+    }
     
+    public Long contarEjemplaresDisponibles(String codigoLibroRegis){
+        EntityManager em = getEntityManager();
+        Long ejemplaresDisponibles = 0L;
+        
+        try {
+            Query query = em.createQuery("SELECT COUNT(e) FROM Ejemplar e WHERE e.libro.codigo_libro = :codigoLibroRegis AND e.estado =1");
+            
+            int codigoInt = Integer.parseInt(codigoLibroRegis);
+            
+            query.setParameter("codigoLibroRegis", codigoInt);
+            ejemplaresDisponibles = (Long)query.getSingleResult();
+        } catch (Exception e) {
+            ejemplaresDisponibles = 0L;
+        }finally{
+            if(em !=null){
+                em.close();
+            }
+        }
+        
+        return ejemplaresDisponibles;
+    }
     
     
     

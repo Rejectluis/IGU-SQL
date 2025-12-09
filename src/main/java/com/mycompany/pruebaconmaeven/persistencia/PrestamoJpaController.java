@@ -5,6 +5,7 @@ import com.mycompany.pruebaconmaeven.logica.Prestamo;
 import com.mycompany.pruebaconmaeven.persistencia.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CacheRetrieveMode;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -166,6 +167,10 @@ public class PrestamoJpaController implements Serializable {
         
         try {
             Query query = em.createQuery("SELECT COUNT(p) FROM Prestamo p WHERE p.usuario.id_usuario = :idUsuarioRegis AND p.estado =1");
+            
+            query.setHint("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
+            em.clear();
+            
             query.setParameter("idUsuarioRegis", idUsuarioRegis);
             totalPrestamos = (Long)query.getSingleResult();
         } catch (Exception e) {

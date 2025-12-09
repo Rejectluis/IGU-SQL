@@ -4,6 +4,7 @@ package com.mycompany.pruebaconmaeven.igu.Prestamo;
 import com.mycompany.pruebaconmaeven.Interfaces.IResetear;
 import com.mycompany.pruebaconmaeven.Interfaces.IRetornar;
 import com.mycompany.pruebaconmaeven.logica.IGuiPrestamo;
+import java.time.LocalDate;
 
 public class NuevoPrestamo extends javax.swing.JFrame implements IRetornar, IResetear{
     
@@ -52,6 +53,7 @@ public class NuevoPrestamo extends javax.swing.JFrame implements IRetornar, IRes
 
         txtArea.setEditable(false);
         txtArea.setColumns(20);
+        txtArea.setFont(new java.awt.Font("Gadugi", 0, 18)); // NOI18N
         txtArea.setRows(5);
         jScrollPane1.setViewportView(txtArea);
 
@@ -131,10 +133,11 @@ public class NuevoPrestamo extends javax.swing.JFrame implements IRetornar, IRes
                 .addGap(270, 270, 270))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(74, 74, 74)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
+                        .addGap(199, 199, 199)
+                        .addComponent(btnContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(48, 48, 48)
                         .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -178,7 +181,15 @@ public class NuevoPrestamo extends javax.swing.JFrame implements IRetornar, IRes
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
-        this.controller.crearPrestamo(txtDni.getText(), txtCodigoLibro.getText());
+        boolean prestamoValido = this.controller.crearPrestamo(txtDni.getText(), txtCodigoLibro.getText());
+        
+        String libroPrestado = this.controller.LibroPrestado(txtCodigoLibro);
+        String usuarioDeudor = this.controller.UsuarioDeudor(dni);
+        
+        if(prestamoValido){
+            txtArea.setText("¡Prestamo exitoso! \n Deudor: " + usuarioDeudor+" \n Prestamo: " + libroPrestado + ""+LocalDate.now().plusDays(14));
+        }
+        
     }//GEN-LAST:event_btnContinuarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed

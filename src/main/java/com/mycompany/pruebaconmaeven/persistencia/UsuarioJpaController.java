@@ -5,6 +5,7 @@ import com.mycompany.pruebaconmaeven.logica.Usuario;
 import com.mycompany.pruebaconmaeven.persistencia.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CacheRetrieveMode;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -145,7 +146,10 @@ public class UsuarioJpaController implements Serializable {
 
         try {
             TypedQuery<Long> query = em.createQuery(jpql, Long.class);
-
+                
+            query.setHint("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
+            em.clear();
+            
             query.setParameter("dniRegis", dni);
             count = query.getSingleResult(); 
         } catch (Exception e) {
@@ -182,7 +186,7 @@ public class UsuarioJpaController implements Serializable {
         Integer idUsuario =null;
         
         try {
-            Query query = em.createQuery("SELECT u.id_usuario FROM Usuario WHERE u.dni = :dniRegis");
+            Query query = em.createQuery("SELECT u.id_usuario FROM Usuario u WHERE u.dni = :dniRegis");
             query.setParameter("dniRegis", dniRegis);
             idUsuario = (Integer) query.getSingleResult();
         } catch (NoResultException e) {

@@ -12,17 +12,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.eclipse.persistence.exceptions.ValidationException;
 
-public class ControladoraPersistencia {
+public class ControladoraPersistencia implements IControladoraPersistencia,IPrestamo,IUsuario,ILibro,IEjemplar{
+    
     UsuarioJpaController controller1 = new UsuarioJpaController();
     LibroJpaController controller2 = new LibroJpaController();
     EjemplarJpaController controller3 = new EjemplarJpaController();
     PrestamoJpaController controller4 = new PrestamoJpaController();
     
     //----------------------------------------------------------------   Usuarios    ------------------------------------------------------
+    @Override
     public void crearUsuario(Usuario user) {
         controller1.create(user);
     }
 
+    @Override
     public void eliminarUsuario(int id) {
         try {
             controller1.destroy(id);
@@ -31,6 +34,7 @@ public class ControladoraPersistencia {
         }
     }
 
+    @Override
     public void editarUsuario(Usuario user) {
         try {
             controller1.edit(user);
@@ -39,10 +43,12 @@ public class ControladoraPersistencia {
         }
     }
 
+    @Override
     public Usuario traerUsuario(int id) {
         return controller1.findUsuario(id);
     }
 
+    @Override
     public ArrayList<Usuario> traerListaUsuarios() {
         
         List <Usuario> listaUsers = controller1.findUsuarioEntities();
@@ -51,23 +57,28 @@ public class ControladoraPersistencia {
         return arraylistUsers;
     }
 
+    @Override
     public boolean existeUsuarioEnBD(String dni) {
         return controller1.existeUsuarioPorDni(dni);
     }
     
+    @Override
     public boolean consultarEmailEnBD(String emailNuevo) {
         return controller1.existeUsuarioPorEmail(emailNuevo);
     }
     
+    @Override
     public Integer traerIdPorDni(String dni) {
         return controller1.retornarIdPorDni(dni);
     }
     
     //----------------------------------------------------------------     Libro   --------------------------------------------------------
+    @Override
     public void crearLibro(Libro libro) {
         controller2.create(libro);
     }
 
+    @Override
     public void eliminarLibro(int id) {
         try {
             controller2.destroy(id);
@@ -76,6 +87,7 @@ public class ControladoraPersistencia {
         }
     }
 
+    @Override
     public void editarLibro(Libro libro) {
         try {
             controller2.edit(libro);
@@ -84,10 +96,12 @@ public class ControladoraPersistencia {
         } 
     }
 
+    @Override
     public Libro traerLibro(int id) {
         return controller2.findLibro(id);
     }
 
+    @Override
     public ArrayList<Libro> traerListaLibros() {
         
         List<Libro> libroLista = controller2.findLibroEntities();
@@ -96,20 +110,24 @@ public class ControladoraPersistencia {
         return listaLibros;
     }
     
+    @Override
     public boolean existeCodigoLibroEnBD(int codigoLibro) {
         return controller2.codigoLibroExsiteEnBD(codigoLibro);
     }
     
+    @Override
     public int traerIdPorCodigoLibro(String codigoLibro) {
         return controller2.traerIdPorCodigoLibro(codigoLibro);
     }
     
     //----------------------------------------------------------------    Ejemplar    -------------------------------------------------
 
+    @Override
     public void crearEjemplar(Ejemplar ejemplar) {
         controller3.create(ejemplar);
     }
         
+    @Override
     public void eliminarEjemplar(int id) {
         try {
             controller3.destroy(id);
@@ -118,6 +136,7 @@ public class ControladoraPersistencia {
         }
     }
 
+    @Override
     public void editarEjemplar(Ejemplar ejemplar) {
         try {
             controller3.edit(ejemplar);
@@ -126,10 +145,12 @@ public class ControladoraPersistencia {
         }
     }
 
+    @Override
     public Ejemplar traerEjemplar(int id) {
         return controller3.findEjemplar(id);
     }
 
+    @Override
     public ArrayList<Ejemplar> traerListaEjemplares() {
         
         List<Ejemplar> listaEjemplar = controller3.findEjemplarEntities();
@@ -138,6 +159,7 @@ public class ControladoraPersistencia {
         return ejemList;
     }
     
+    @Override
     public void eliminarEjemplaresPorLibro(int idLibro){
         try {
             controller3.eliminarEjemplaresPorLibro(idLibro); 
@@ -147,10 +169,12 @@ public class ControladoraPersistencia {
     }
     
     
+    @Override
     public List<Ejemplar> traerEjemplaresPorLibro(int idLibro) {
         return controller3.findEjemplaresByLibro(idLibro);
     }
     
+    @Override
     public void modificarEjemplar(Libro libro, String ejemplares){
         try {
             controller3.modificarEjemplaresP(libro, ejemplares);
@@ -161,17 +185,30 @@ public class ControladoraPersistencia {
         }
     }
     
+    @Override
     public boolean LibroTieneEjemplaresDisponibles(String codigoLibro) {
         return controller3.LibroTieneEjemplaresDisponibles(codigoLibro);
+    }
+    
+    @Override
+    public Ejemplar obtenerPrimerEjemplarDisponible(String codigoLibro) {
+        return controller3.obtenerPrimerEjemplarDisponible(codigoLibro);
+    }
+    
+    @Override
+    public Long contarEjemplaresDisponibles(String codigoLibro) {
+        return  controller3.contarEjemplaresDisponibles(codigoLibro);
     }
     
     
     //----------------------------------------------------------------    Prestamo    -------------------------------------------------
 
+    @Override
     public void crearPrestamo(Prestamo prestamo) {
         controller4.create(prestamo);
     }
 
+    @Override
     public void eliminarPrestamo(int id) {
         try {
             controller4.destroy(id);
@@ -180,6 +217,7 @@ public class ControladoraPersistencia {
         }
     }
 
+    @Override
     public void editarPrestamo(Prestamo prestamo) {
         try {
             controller4.edit(prestamo);
@@ -188,22 +226,35 @@ public class ControladoraPersistencia {
         }
     }
 
+    @Override
     public Prestamo traerPrestamo(int id) {
         return controller4.findPrestamo(id);
     }
 
+    @Override
     public List<Prestamo> traerListaPrestamos() {
         
         return controller4.findPrestamoEntities();
     }
 
+    @Override
     public boolean verificarLibroPrestado(int idLibro){
         return controller4.libroTienePrestamos(idLibro);
     } 
 
-    public boolean UsuarioSuperaLimitePrestamos(Integer idUsuario) {
+    @Override
+    public boolean UsuarioSuperaLimitePrestamos(int idUsuario) {
         return controller4.UsuarioSuperaLimitePrestamos(idUsuario);
     }
+
+//    @Override
+//    public void crearTransaccionDePrestamo(String dni, String codigoLibro, Integer traerIdPorDni) {
+//        
+//    }
+
+
+
+
 
 
 

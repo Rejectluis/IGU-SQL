@@ -274,7 +274,7 @@ public class A_ColeccionLibro extends javax.swing.JFrame implements IColeccion{
         };
         
         //Establecer el nombre de las columnas
-        String titulos [] = {"id","Título","Autor","Publicación","Ejemplares","Código"};
+        String titulos [] = {"id","Título","Autor","Publicación","Ejemplares totales","Disponibles","Código"};
         modeloTabla.setColumnIdentifiers(titulos); // se setea el nombre de las columnas
         
         //Cargar la tabla
