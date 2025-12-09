@@ -3,25 +3,17 @@ package com.mycompany.pruebaconmaeven.logica.validadores;
 
 import com.mycompany.pruebaconmaeven.Interfaces.validaciones.IValidador;
 import com.mycompany.pruebaconmaeven.logica.Usuario;
+import com.mycompany.pruebaconmaeven.persistencia.IControladoraPersistencia;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 public class UsuarioValidador implements IValidador<Usuario>{
     
-    public void showInformativeMessage(String message, String type, String title){
-        JOptionPane opti = new JOptionPane(message);
-        
-        if(type.equals("Error")){
-            opti.setMessageType(JOptionPane.ERROR_MESSAGE);
-        }else if (type.equals("Info")){
-            opti.setMessageType(JOptionPane.INFORMATION_MESSAGE);
-        }
-        
-        JDialog dialog = opti.createDialog(title);
-        dialog.setAlwaysOnTop(true);
-        dialog.setVisible(true);
+    private final IControladoraPersistencia controlPersis;
+
+    public UsuarioValidador(IControladoraPersistencia controlPersis) {
+        this.controlPersis = controlPersis;
     }
-    
     
     //---------------------------------------------------------------------- Métodos de IValidador --------------------------------------------------------------------------------------------------------//
     @Override
@@ -33,7 +25,7 @@ public class UsuarioValidador implements IValidador<Usuario>{
     
     
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-    //                                                                      Métodos independientes                                                                                                         //
+    //                                                                      Métodos auxiliares                                                                                                         //
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
     
     
@@ -120,19 +112,91 @@ public class UsuarioValidador implements IValidador<Usuario>{
         return true;                                    // -> true: singifica que sí se pretende editar el email
     }
 
+    /*
+    *   Este método se encarga de validar que el usuario que está por hacer un prestamo nuevo en la igu.Prestamo sea un 
+    *   usuario registrado en la base de datos previamente
+    */
+    
+    public boolean validarExistenciaDeDniEnBD(String dni) {
+        if(controlPersis.existeUsuarioEnBD(dni)){
+            System.out.println("dni ya asociado a un usuario pes");
+            return false;   // false -> El DNI ya está asociado a un registro 
+        }
+        return true;    // true -> DNI no asociado a ninguna persona en los registros
+    }
+    
+    public boolean UsuarioSuperaLimitesDePrestamo(int idPorDni) {
+        if(!controlPersis.UsuarioSuperaLimitePrestamos(idPorDni)){
+            showInformativeMessage("El usuario ha alcanzado el máximo de prestamos (5)", "Info", "Prestamos disponibles alcanzados");
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean validarEmailEnBD(String emailNuevo) {
+        if(controlPersis.consultarEmailEnBD(emailNuevo)){
+            showInformativeMessage("El email ingresado ya está registrado", "Error", "Error en el ingreso de datos");
+            return false;
+        }
+        return true;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //-------------------------------------------------------------- Métodos informativos
+    public void showInformativeMessage(String message, String type, String title){
+        JOptionPane opti = new JOptionPane(message);
+        
+        if(type.equals("Error")){
+            opti.setMessageType(JOptionPane.ERROR_MESSAGE);
+        }else if (type.equals("Info")){
+            opti.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        JDialog dialog = opti.createDialog(title);
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
+    }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
     
     
     

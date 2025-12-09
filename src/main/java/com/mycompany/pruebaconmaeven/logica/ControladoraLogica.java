@@ -1,21 +1,24 @@
 
 package com.mycompany.pruebaconmaeven.logica;
 
-import com.mycompany.pruebaconmaeven.persistencia.ControladoraPersistencia;
+import com.mycompany.pruebaconmaeven.persistencia.IControladoraPersistencia;
 import inyeccion.InversionDependency;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 public class ControladoraLogica implements IControladora{
-    ControladoraPersistencia controlPersis = null; 
     private InversionDependency dependencias; 
-
+    private IControladoraPersistencia controlPersis;
+    
     public ControladoraLogica() {
-        this.dependencias = new InversionDependency();
-        this.controlPersis = new ControladoraPersistencia();
+        
     }
+
+    public void setDependencias(InversionDependency dependencias) {this.dependencias = dependencias;}
+    public void setControl(IControladoraPersistencia controlPersis) { this.controlPersis = controlPersis;}
 
     ////////////////////////////////////////////////////////    Usuarios   //////////////////////////////////////////////////////////////////////////
     public void crearUsuario(Usuario user){
@@ -32,7 +35,6 @@ public class ControladoraLogica implements IControladora{
     }
     
     public Usuario traerUsuario(int id){
-        
         return controlPersis.traerUsuario(id);
     }
     
@@ -161,8 +163,8 @@ public class ControladoraLogica implements IControladora{
             return;
         }
         
-        if(this.controlPersis.existeCodigoLibroEnBD(Integer.parseInt(codigoLibro))){
-            showInformativeMessage("El código del libro ingresado ya está registrado", "Error", "Error en el ingreso de datos");
+        if(this.dependencias.existeCodigoLibroEnBD(Integer.parseInt(codigoLibro))){
+            showInformativeMessage("El código ingresado ya está registrado a un libro", "Error", "Error en el ingreso de datos");
             return;
         }
         
@@ -180,12 +182,12 @@ public class ControladoraLogica implements IControladora{
         String codigoLibroOriginal = String.valueOf(libroOriginal.getCodigo_libro());
         
         if(this.dependencias.validarCodigoLibro(codigoLibroOriginal, codigoLibroNuevo)){
-            if(this.controlPersis.existeCodigoLibroEnBD(Integer.parseInt(codigoLibroNuevo))){
-                showInformativeMessage("El código del libro ingresado ya está registrado", "Error", "Error en el ingreso de datos");
+            if(this.dependencias.existeCodigoLibroEnBD(Integer.parseInt(codigoLibroNuevo))){
+                showInformativeMessage("El código ingresado ya está registrado a un libro", "Error", "Error en el ingreso de datos");
                 return;
             }
             libroOriginal.setCodigo_libro(Integer.parseInt(codigoLibroNuevo));
-        }
+        }    
         
         libroOriginal.setAutor(autorNuevo);
         libroOriginal.setNro_paginas(Integer.parseInt(paginasNuevas));
@@ -213,13 +215,17 @@ public class ControladoraLogica implements IControladora{
         
         if(liber !=null){                                             
             for(Libro e: liber){
-                if(e.getEstado()==1){                               
+                if(e.getEstado()==1){
+                    
+                    Long ejemplaresDisponibles = this.controlPersis.contarEjemplaresDisponibles(String.valueOf(e.getCodigo_libro()));
+                    
                     Object[] registros = {
                         e.getId_libro(), 
                         e.getTitulo(),
                         e.getAutor(),
                         e.getAnno_publicacion(),
                         e.getEjemplareslist().size(),
+                        ejemplaresDisponibles,
                         e.getCodigo_libro()
                     };
                     datosTabla.add(registros);                          
@@ -254,6 +260,21 @@ public class ControladoraLogica implements IControladora{
         return null;
     }
     
+    /*
+    *   Este método busca el libro prestado por medio de su código y obtiene tanto el nombre como el titulo de la obra 
+    *   para ser seteados en la la clase «NuevoPrestamo», en el txtArea.
+    */
+    @Override
+    public String LibroPrestado(JTextField CodigoLibro) {
+        
+        controlPersis.traerIdPorCodigoLibro(String.valueOf(CodigoLibro));
+        
+        String titulo = controlPersis.traerLibro(controlPersis.traerIdPorCodigoLibro(String.valueOf(CodigoLibro))).getTitulo();
+        String autor =  controlPersis.traerLibro(controlPersis.traerIdPorCodigoLibro(String.valueOf(CodigoLibro))).getAutor();
+        
+        return "Título: " + titulo + "\nAutor: " + autor;
+    }
+    
     //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
     //                                                              igu.Usuario                                                                                                                                   //
     //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -271,12 +292,12 @@ public class ControladoraLogica implements IControladora{
             return; 
         }
         
-        if(controlPersis.existeUsuarioEnBD(dni)){
-            showInformativeMessage("El DNI ingresado ya está registrado", "Error", "Error en el ingreso de datos");
+        if(!this.dependencias.existeUsuarioEnBD(dni)){
+            showInformativeMessage("El DNI ingresado ya está registrado a una persona", "Error", "DNI ya registrado");
             return;
         }
-        if(controlPersis.consultarEmailEnBD(email)){
-            showInformativeMessage("El email ingresado ya está registrado", "Error", "Error en el ingreso de datos");
+        
+        if(!this.dependencias.consultarEmailEnBD(email)){
             return;
         }
 
@@ -293,21 +314,19 @@ public class ControladoraLogica implements IControladora{
         }
         
         Usuario usuarioOriginal = this.controlPersis.traerUsuario(idUsuario);
-        
         String dniOriginal = usuarioOriginal.getDni();
         String emailOriginal = usuarioOriginal.getEmail();
         
         if(this.dependencias.validarDni(dniOriginal, dniNuevo)){                                                              // -> true: significa que sí se desea editar el dni
-            if(controlPersis.existeUsuarioEnBD(dniNuevo)){
-                showInformativeMessage("El DNI ingresado ya está registrado", "Error", "Error en el ingreso de datos");
+            if(!this.dependencias.existeUsuarioEnBD(dniNuevo)){
+                showInformativeMessage("El DNI ingresado ya está registrado a una persona", "Error", "DNI ya registrado");
                 return;
             }
             usuarioOriginal.setDni(dniNuevo);
         }
         
         if(this.dependencias.validarEmail(emailOriginal, emailNuevo)){                                                        // -> true: significa que sí se desea editar el email         
-            if(controlPersis.consultarEmailEnBD(emailNuevo)){
-                showInformativeMessage("El email ingresado ya está registrado", "Error", "Error en el ingreso de datos");
+            if(!this.dependencias.consultarEmailEnBD(emailNuevo)){
                 return;
             }
             usuarioOriginal.setEmail(emailNuevo);
@@ -376,36 +395,75 @@ public class ControladoraLogica implements IControladora{
         return null;
     }
     
+    /*
+    *   Este método retorna el nombre del usuario que presta el libro. Es usado para el diagnóstico del txtArea, 
+    *   en la clase «NuevoPrestamo».
+    */
+    
+    @Override
+    public String UsuarioDeudor(int dni) {
+        
+        return controlPersis.traerUsuario(dni).getNombre();
+    }
+
     
     //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
     //                                                              igu.Prestamo                                                                                                                                   //
     //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
     
+    
+    /*
+    *   Este método se encarga de crear los prestamos y cargarlos a la base de datos. Antes de cargar un prestamo.
+    *
+    *   El primer (1) if evalúa que el dni y el código sean formatos váldios. Igual que cuando se intenta cargar un 
+    *   libro o dni a la base de datos.
+    *
+    *   El segundo (2) if se encarga de ver que el usuario exista en la bd, porque no se puede prestar a un usuario no registrado.
+    *   
+    *   El tercer (3) if también valida que el código del libro exista en la bd, porque no se puede prestar un libro que no existe.
+    *
+    *   El cuarto (4) if valida que el usuario tenga menos de 5 prestamos activos (el límite). Si tiene 5 ya no puede pedir un nuevo prestamo.
+    *
+    *   El quinto (5) if evalúa que exista al menos un (1) ejemplar disponiblep para prestar del libro
+    */
     @Override
-    public void crearPrestamo(String dni, String codigoLibro) {
-        if(!this.dependencias.validarDni(dni) || !this.dependencias.validarCodigo(codigoLibro)){
-            return;
+    public boolean crearPrestamo(String dni, String codigoLibro) {
+        //-------------------------------------- validaciones necesarias
+        if(!this.dependencias.validarDni(dni) || !this.dependencias.validarCodigo(codigoLibro)){   // (1)
+            return false;
         }
         
-        if(!controlPersis.existeUsuarioEnBD(dni)){
-            showInformativeMessage("El usuario no está registrado en el sistema", "Error", "Usuario inexistente");
-            return;
-        }
-        if(!(controlPersis.existeCodigoLibroEnBD(Integer.parseInt(codigoLibro)))){
-            showInformativeMessage("El código del libro no está registrado en el sistema", "Error", "Libro inexistente");
-            return;
-        }
-        if(controlPersis.UsuarioSuperaLimitePrestamos(controlPersis.traerIdPorDni(dni))){
-            showInformativeMessage("El usuario ha alcanzado el máximo de prestamos (5)", "Info", "Prestamos disponibles alcanzados");
-            return;
+        if(this.dependencias.existeUsuarioEnBD(dni) ){                                             // (2)
+            showInformativeMessage("El DNI ingresado no está asociado a una persona en el sistema", "Error", "DNI no registrado");
+            return false;
         }
         
-        if(!controlPersis.LibroTieneEjemplaresDisponibles(codigoLibro)){
-            showInformativeMessage("El libro no tiene ejemplares disponibles", "Info", "Prestamos disponibles alcanzados");
+        if(!this.dependencias.existeCodigoLibroEnBD(Integer.parseInt(codigoLibro))){    // (3)
+            showInformativeMessage("El código ingresado no pertenece a ningún registrado en el sistema", "Error", "Libro inexistente");
+            return false;
+        }
+  
+        if (!this.dependencias.UsuarioSuperaLimitePrestamos(Integer.parseInt(dni))){       //  (4)
+            return false;
         }
         
+        if(!this.dependencias.LibroTieneEjemplaresDisponibles(codigoLibro)){                        //  (5)
+            return false;
+        }
+
+        //-------------------------------------- validaciones necesarias
+
+        //-------------------------------------- creación del prestamo
+        Usuario usuario = controlPersis.traerUsuario(controlPersis.traerIdPorDni(dni));
+        Ejemplar ejemplarElegido = this.controlPersis.obtenerPrimerEjemplarDisponible(codigoLibro);
         
+        ejemplarElegido.setEstado(0);
+        this.controlPersis.editarEjemplar(ejemplarElegido);
         
+        Prestamo pres = new Prestamo(usuario, ejemplarElegido);
+        controlPersis.crearPrestamo(pres);
+        showInformativeMessage("¡Prestamo creado exitosamente!", "Info", "Préstamo creado con éxito");
+        return true;
     }
 
     
@@ -450,6 +508,8 @@ public class ControladoraLogica implements IControladora{
         dialog.setAlwaysOnTop(true);
         dialog.setVisible(true);
     }
+
+
 
 
 

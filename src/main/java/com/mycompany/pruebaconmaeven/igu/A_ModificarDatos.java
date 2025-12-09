@@ -313,6 +313,14 @@ public class A_ModificarDatos extends javax.swing.JFrame implements IMostrar,IRe
 
     @Override
     public void vaciarTexto() {
+        
+        txtAutorLibro.setText("");
+        txtCodigoLibro.setText("");
+        txtEjemplares.setText("");
+        txtNro_paginas.setText("");
+        txtPublicacionLibro.setText("");
+        txtTituloLibro.setText("");
+        
     }
 
     @Override

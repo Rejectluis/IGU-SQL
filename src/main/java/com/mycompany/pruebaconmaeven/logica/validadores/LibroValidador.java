@@ -3,25 +3,18 @@ package com.mycompany.pruebaconmaeven.logica.validadores;
 
 import com.mycompany.pruebaconmaeven.Interfaces.validaciones.IValidador;
 import com.mycompany.pruebaconmaeven.logica.Libro;
+import com.mycompany.pruebaconmaeven.persistencia.IControladoraPersistencia;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 public class LibroValidador implements IValidador<Libro>{
-
-    public void showInformativeMessage(String message, String type, String title){
-        JOptionPane opti = new JOptionPane(message);
-        
-        if(type.equals("Error")){
-            opti.setMessageType(JOptionPane.ERROR_MESSAGE);
-        }else if (type.equals("Info")){
-            opti.setMessageType(JOptionPane.INFORMATION_MESSAGE);
-        }
-        
-        JDialog dialog = opti.createDialog(title);
-        dialog.setAlwaysOnTop(true);
-        dialog.setVisible(true);
-    }
     
+    private final IControladoraPersistencia controlPersis;
+
+    public LibroValidador(IControladoraPersistencia controlPersis) {
+        this.controlPersis = controlPersis;
+    }
+
     //---------------------------------------------------------------------- Métodos de IValidador --------------------------------------------------------------------------------------------------------//
     @Override
     public boolean validar(Libro entidad) {
@@ -109,14 +102,45 @@ public class LibroValidador implements IValidador<Libro>{
         }
         return true;
     }
+
+    public boolean validarExistenciaDeLibroEnBD(int codigoLibro) {
+        if(!controlPersis.existeCodigoLibroEnBD(codigoLibro)){
+//            showInformativeMessage("El código del libro no está registrado en el sistema", "Error", "Libro inexistente");
+            return false;   // false -> el libro no existe
+        }
+//        showInformativeMessage("El código ingresado ya está registrado a un libro", "Error", "Error en el ingreso de datos");
+        return true;    // true -> el libro sí existe
+    }
+    
+    public boolean validarDisponibilidadDeEjemplares(String codigoLibro) {
+        if(!controlPersis.LibroTieneEjemplaresDisponibles(codigoLibro)){
+            showInformativeMessage("El libro no tiene ejemplares disponibles", "Info", "Prestamos disponibles alcanzados");
+            return false;
+        }
+        return true;
+    }
     
     
     
     
     
+    //---------------------------------------------------------- métodos de mensajes
     
-    
-    
+    public void showInformativeMessage(String message, String type, String title){
+        JOptionPane opti = new JOptionPane(message);
+        
+        if(type.equals("Error")){
+            opti.setMessageType(JOptionPane.ERROR_MESSAGE);
+        }else if (type.equals("Info")){
+            opti.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        JDialog dialog = opti.createDialog(title);
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
+    }
+
+
     
     
 }
