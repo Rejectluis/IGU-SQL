@@ -406,10 +406,10 @@ public class ControladoraLogica implements IControladora{
     
     
     /*
-    *   Este método se encarga de crear los prestamos y cargarlos a la base de datos. Antes de cargar un prestamo.
+    *   Este método se encarga de crear los prestamos y cargarlos a la base de datos. Antes de cargar un prestamo se hace una serie de validaciones:
     *
-    *   El primer (1) if evalúa que el dni y el código sean formatos váldios. Igual que cuando se intenta cargar un 
-    *   libro o dni a la base de datos.
+    *   El primer (1) if evalúa que el dni y el código sean formatos váldios, similar a cuando se intenta cargar un 
+    *   libro o dni a la base de datos por primera vez.
     *
     *   El segundo (2) if se encarga de ver que el usuario exista en la bd, porque no se puede prestar a un usuario no registrado.
     *   
@@ -516,10 +516,21 @@ public class ControladoraLogica implements IControladora{
         return datosTabla;
     }
     
+    /*
+    *   Este método trae un resumen de los prestamos activos en el sistema. Se usa en la igu de «VerPrestamosActivos»
+    */
+    @Override
+    public List<Object[]> traerResumenDePrestamosActivos() {
+        return controlPersis.traerResumenDePrestamosActivos();
+    }
     
-    
-    
-    
+    /*
+    *
+    */
+    @Override
+    public Long contarTotalPrestamoActivos() {
+        return controlPersis.contarTotalPrestamoActivos();
+    }
     
     
     
@@ -561,12 +572,4 @@ public class ControladoraLogica implements IControladora{
 
 
 
-
-
-
-
-
-
-    
-    
 }

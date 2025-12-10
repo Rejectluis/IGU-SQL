@@ -283,7 +283,7 @@ public class EjemplarJpaController implements Serializable {
         
         try {
             Query query = em.createQuery("SELECT COUNT(e) FROM Ejemplar e WHERE e.libro.codigo_libro = :codigoLibroRegis AND e.estado =1");
-            
+            query.setHint("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
             int codigoInt = Integer.parseInt(codigoLibroRegis);
             
             query.setParameter("codigoLibroRegis", codigoInt);
@@ -295,20 +295,8 @@ public class EjemplarJpaController implements Serializable {
                 em.close();
             }
         }
-        
         return ejemplaresDisponibles;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
 }

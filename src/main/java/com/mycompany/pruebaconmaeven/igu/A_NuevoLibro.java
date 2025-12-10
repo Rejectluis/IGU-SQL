@@ -40,6 +40,7 @@ public class A_NuevoLibro extends javax.swing.JFrame implements IResetear, IReto
         jSeparator2 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Californian FB", 0, 36)); // NOI18N
         jLabel1.setText("Nuevo libro");

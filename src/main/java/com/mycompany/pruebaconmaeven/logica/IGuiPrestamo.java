@@ -14,4 +14,8 @@ public interface IGuiPrestamo {
     public List<Object[]> mostrarRegistrosDePrestamos(String dni);
 
     public void RegresarPrestamo(int idPrestamo);
+
+    public List<Object[]> traerResumenDePrestamosActivos();
+
+    public Long contarTotalPrestamoActivos();
 }
