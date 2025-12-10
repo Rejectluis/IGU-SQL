@@ -87,7 +87,6 @@ public class LibroValidador implements IValidador<Libro>{
     }
 
     public boolean validarCodigoLibro(String codigoLibroOriginal, String codigoLibroNuevo) {
-        
         if(codigoLibroOriginal.equals(codigoLibroNuevo)){
             return false;
         }
@@ -95,7 +94,6 @@ public class LibroValidador implements IValidador<Libro>{
     }
 
     public boolean validarCodigoLibro(String codigoLibro) {
-        
         if(codigoLibro.trim().isEmpty() || !codigoLibro.matches("\\d{3}")){                                                                                                                                                                                           
             showInformativeMessage("ERROR: Formato inválido. El código debe ser de 3 dígitos", "Error", "Error de validación");
             return false;
@@ -105,10 +103,8 @@ public class LibroValidador implements IValidador<Libro>{
 
     public boolean validarExistenciaDeLibroEnBD(int codigoLibro) {
         if(!controlPersis.existeCodigoLibroEnBD(codigoLibro)){
-//            showInformativeMessage("El código del libro no está registrado en el sistema", "Error", "Libro inexistente");
             return false;   // false -> el libro no existe
         }
-//        showInformativeMessage("El código ingresado ya está registrado a un libro", "Error", "Error en el ingreso de datos");
         return true;    // true -> el libro sí existe
     }
     
@@ -119,10 +115,6 @@ public class LibroValidador implements IValidador<Libro>{
         }
         return true;
     }
-    
-    
-    
-    
     
     //---------------------------------------------------------- métodos de mensajes
     

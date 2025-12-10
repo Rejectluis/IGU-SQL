@@ -119,7 +119,6 @@ public class UsuarioValidador implements IValidador<Usuario>{
     
     public boolean validarExistenciaDeDniEnBD(String dni) {
         if(controlPersis.existeUsuarioEnBD(dni)){
-            System.out.println("dni ya asociado a un usuario pes");
             return false;   // false -> El DNI ya está asociado a un registro 
         }
         return true;    // true -> DNI no asociado a ninguna persona en los registros

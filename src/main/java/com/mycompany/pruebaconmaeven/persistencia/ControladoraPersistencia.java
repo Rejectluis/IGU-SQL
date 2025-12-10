@@ -44,7 +44,7 @@ public class ControladoraPersistencia implements IControladoraPersistencia,IPres
     }
 
     @Override
-    public Usuario traerUsuario(int id) {
+    public Usuario UsuarioDeudor(int id) {
         return controller1.findUsuario(id);
     }
 
@@ -247,10 +247,14 @@ public class ControladoraPersistencia implements IControladoraPersistencia,IPres
         return controller4.UsuarioSuperaLimitePrestamos(idUsuario);
     }
 
-//    @Override
-//    public void crearTransaccionDePrestamo(String dni, String codigoLibro, Integer traerIdPorDni) {
-//        
-//    }
+    @Override
+    public List<Prestamo> traerPrestamosActivosDelDNI(String dni) {
+        return controller4.traerPrestamosActivosDelDNI(dni);
+    }
+
+
+
+
 
 
 

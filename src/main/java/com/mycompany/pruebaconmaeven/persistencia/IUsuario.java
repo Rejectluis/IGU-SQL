@@ -12,7 +12,7 @@ public interface IUsuario {
 
     public void editarUsuario(Usuario user);
 
-    public Usuario traerUsuario(int id);
+    public Usuario UsuarioDeudor(int id);
 
     public ArrayList<Usuario> traerListaUsuarios();
     

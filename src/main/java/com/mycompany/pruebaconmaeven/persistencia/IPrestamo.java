@@ -20,7 +20,8 @@ public interface IPrestamo {
     
     public boolean LibroTieneEjemplaresDisponibles(String codigoLibro);
     
-//    public void crearTransaccionDePrestamo(String dni, String codigoLibro, Integer traerIdPorDni);
+    public List<Prestamo> traerPrestamosActivosDelDNI(String dni);
+    
 
 
     
