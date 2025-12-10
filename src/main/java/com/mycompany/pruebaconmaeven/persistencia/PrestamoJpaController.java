@@ -180,5 +180,30 @@ public class PrestamoJpaController implements Serializable {
         }
         return totalPrestamos<5;
     }
+    
+    public List<Prestamo> traerPrestamosActivosDelDNI(String dniRegis){
+        EntityManager em = getEntityManager();
+        List<Prestamo> prestamosActivos = null;
+        
+        try {
+            TypedQuery<Prestamo> query = em.createQuery("SELECT e FROM Prestamo e WHERE e.usuario.dni = :dniRegis AND e.estado = 1", Prestamo.class);
+            
+            query.setHint("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
+            em.clear();
+            
+            query.setParameter("dniRegis", dniRegis);
+            prestamosActivos = query.getResultList();
+        } catch (Exception e) {
+            prestamosActivos = null;
+            throw new RuntimeException("Error en la persistencia al buscar préstamos activos para el DNI " + dniRegis, e);
+        }finally{
+            if (em != null){
+                em.close();
+            }
+        }
+        
+        return prestamosActivos;
+    }
+    
   
 }

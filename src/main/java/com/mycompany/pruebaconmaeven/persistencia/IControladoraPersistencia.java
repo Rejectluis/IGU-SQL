@@ -3,6 +3,8 @@ package com.mycompany.pruebaconmaeven.persistencia;
 
 public interface IControladoraPersistencia extends IPrestamo,IUsuario,IEjemplar,ILibro{
 
+    
+
 
     
 

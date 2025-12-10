@@ -20,6 +20,7 @@ public class NuevoPrestamo extends javax.swing.JFrame implements IRetornar, IRes
     private void initComponents() {
 
         jPasswordField1 = new javax.swing.JPasswordField();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -37,6 +38,8 @@ public class NuevoPrestamo extends javax.swing.JFrame implements IRetornar, IRes
         btnRegresar = new javax.swing.JButton();
 
         jPasswordField1.setText("jPasswordField1");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -141,9 +144,8 @@ public class NuevoPrestamo extends javax.swing.JFrame implements IRetornar, IRes
                         .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(48, 48, 48)
                         .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
-                        .addComponent(jSeparator2))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(100, Short.MAX_VALUE))
         );
@@ -182,14 +184,12 @@ public class NuevoPrestamo extends javax.swing.JFrame implements IRetornar, IRes
 
     private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
         boolean prestamoValido = this.controller.crearPrestamo(txtDni.getText(), txtCodigoLibro.getText());
-        
-        String libroPrestado = this.controller.LibroPrestado(txtCodigoLibro);
-        String usuarioDeudor = this.controller.UsuarioDeudor(dni);
-        
+
         if(prestamoValido){
-            txtArea.setText("¡Prestamo exitoso! \n Deudor: " + usuarioDeudor+" \n Prestamo: " + libroPrestado + ""+LocalDate.now().plusDays(14));
+            String libroPrestado = this.controller.LibroPrestado(txtCodigoLibro.getText());
+            String usuarioDeudor = this.controller.UsuarioDeudor(Integer.parseInt(txtDni.getText()));
+            txtArea.setText("¡Prestamo exitoso! \nDeudor: " + usuarioDeudor+" \nTítulo prestado: " + libroPrestado + "\nDevolución esperada: "+LocalDate.now().plusDays(14));
         }
-        
     }//GEN-LAST:event_btnContinuarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
@@ -205,6 +205,7 @@ public class NuevoPrestamo extends javax.swing.JFrame implements IRetornar, IRes
     private javax.swing.JButton btnContinuar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnRegresar;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;

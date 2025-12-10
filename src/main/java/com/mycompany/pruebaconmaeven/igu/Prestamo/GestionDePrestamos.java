@@ -37,7 +37,7 @@ public class GestionDePrestamos extends javax.swing.JFrame implements IRetornar,
         jLabel1.setText("Gestión de préstamos");
 
         btnRegistrarPrestamo.setFont(new java.awt.Font("Gadugi", 0, 18)); // NOI18N
-        btnRegistrarPrestamo.setText("Registrar préstamo");
+        btnRegistrarPrestamo.setText("Préstamo nuevo");
         btnRegistrarPrestamo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegistrarPrestamoActionPerformed(evt);
@@ -56,7 +56,12 @@ public class GestionDePrestamos extends javax.swing.JFrame implements IRetornar,
         btnVerPrestamos.setText("Ver préstamos");
 
         btnRegistrarDevolucion.setFont(new java.awt.Font("Gadugi", 0, 18)); // NOI18N
-        btnRegistrarDevolucion.setText("Registrar devolución");
+        btnRegistrarDevolucion.setText("Devolución");
+        btnRegistrarDevolucion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarDevolucionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -132,6 +137,11 @@ public class GestionDePrestamos extends javax.swing.JFrame implements IRetornar,
         NuevoPrestamo nuevoPrestamo = new NuevoPrestamo(this.controller);
         mostrarYCentrarPantalla(nuevoPrestamo);
     }//GEN-LAST:event_btnRegistrarPrestamoActionPerformed
+
+    private void btnRegistrarDevolucionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarDevolucionActionPerformed
+        Devolucion dev = new Devolucion(this.controller);
+        mostrarYCentrarPantalla(dev);
+    }//GEN-LAST:event_btnRegistrarDevolucionActionPerformed
 
 
 

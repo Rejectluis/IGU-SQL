@@ -3,11 +3,11 @@ package com.mycompany.pruebaconmaeven.logica;
 
 import com.mycompany.pruebaconmaeven.persistencia.IControladoraPersistencia;
 import inyeccion.InversionDependency;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 public class ControladoraLogica implements IControladora{
     private InversionDependency dependencias; 
@@ -35,7 +35,7 @@ public class ControladoraLogica implements IControladora{
     }
     
     public Usuario traerUsuario(int id){
-        return controlPersis.traerUsuario(id);
+        return controlPersis.UsuarioDeudor(id);
     }
     
     public ArrayList<Usuario> traerListaUsuarios(){
@@ -197,7 +197,6 @@ public class ControladoraLogica implements IControladora{
         controlPersis.editarLibro(libroOriginal);
         controlPersis.modificarEjemplar(libroOriginal, ejemplaresNuevo);
         showInformativeMessage("!Se actualizó el libro correctamente!", "Info", "¡Actualización de datos exitosa!");
-
     }
     
     /*
@@ -206,7 +205,6 @@ public class ControladoraLogica implements IControladora{
     *   En su método «cargarTabla», la línea List<Object[]> libros = controller.mostrarRegistrosDeLibros(); " trae los datos
     *   de cada registro de libros, pero no está retornando datos de tipo Libro, sino datos de tipo List<Objet[]>
     */
-
     @Override
     public List<Object[]> mostrarRegistrosDeLibros() {
         
@@ -240,7 +238,6 @@ public class ControladoraLogica implements IControladora{
     *   «A_ModificarDatos» Se retorna un object[] para que la clase «A_ModificarDatos» no esté relacionada la clase 
     *    Libro directamente.
     */
-    
     @Override
     public Object[] pasarDatosDelLibro(int idLibro) {
         
@@ -265,14 +262,14 @@ public class ControladoraLogica implements IControladora{
     *   para ser seteados en la la clase «NuevoPrestamo», en el txtArea.
     */
     @Override
-    public String LibroPrestado(JTextField CodigoLibro) {
+    public String LibroPrestado(String CodigoLibro) {
         
         controlPersis.traerIdPorCodigoLibro(String.valueOf(CodigoLibro));
         
-        String titulo = controlPersis.traerLibro(controlPersis.traerIdPorCodigoLibro(String.valueOf(CodigoLibro))).getTitulo();
-        String autor =  controlPersis.traerLibro(controlPersis.traerIdPorCodigoLibro(String.valueOf(CodigoLibro))).getAutor();
+        String titulo = controlPersis.traerLibro(controlPersis.traerIdPorCodigoLibro(CodigoLibro)).getTitulo();
+        String autor =  controlPersis.traerLibro(controlPersis.traerIdPorCodigoLibro(CodigoLibro)).getAutor();
         
-        return "Título: " + titulo + "\nAutor: " + autor;
+        return titulo + "\nAutor: " + autor;
     }
     
     //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -285,7 +282,6 @@ public class ControladoraLogica implements IControladora{
     *   sean datos válidos. Si no son válidos se termina el ciclo de vida del método. Lo mismo sucede con el método 
     *   "GuardarModificación".
     */
-
     @Override
     public void cargarUsuario(String ape_materno, String ape_paterno, String dni, String email, String nombre, String telefono) {
         if(!(this.dependencias.validarDatosUsuario(ape_materno, ape_paterno, dni, email, nombre, telefono))){
@@ -313,7 +309,7 @@ public class ControladoraLogica implements IControladora{
             return; 
         }
         
-        Usuario usuarioOriginal = this.controlPersis.traerUsuario(idUsuario);
+        Usuario usuarioOriginal = this.controlPersis.UsuarioDeudor(idUsuario);
         String dniOriginal = usuarioOriginal.getDni();
         String emailOriginal = usuarioOriginal.getEmail();
         
@@ -376,10 +372,9 @@ public class ControladoraLogica implements IControladora{
     *   También se retorna un Object [] para que ninguna clase de la interfaz esté directamente relacionada con las clases
     *    entidades (Libro, Usuario, Prestamo, etc).
     */
-    
     @Override
     public Object[] pasarDatosDelUsuario(int idUsuario) {
-        Usuario user = controlPersis.traerUsuario(idUsuario);
+        Usuario user = controlPersis.UsuarioDeudor(idUsuario);
         
         if(user!=null){
             Object[] datos = {
@@ -399,11 +394,9 @@ public class ControladoraLogica implements IControladora{
     *   Este método retorna el nombre del usuario que presta el libro. Es usado para el diagnóstico del txtArea, 
     *   en la clase «NuevoPrestamo».
     */
-    
     @Override
     public String UsuarioDeudor(int dni) {
-        
-        return controlPersis.traerUsuario(dni).getNombre();
+        return controlPersis.UsuarioDeudor(controlPersis.traerIdPorDni(String.valueOf(dni))).getNombre();
     }
 
     
@@ -454,7 +447,7 @@ public class ControladoraLogica implements IControladora{
         //-------------------------------------- validaciones necesarias
 
         //-------------------------------------- creación del prestamo
-        Usuario usuario = controlPersis.traerUsuario(controlPersis.traerIdPorDni(dni));
+        Usuario usuario = controlPersis.UsuarioDeudor(controlPersis.traerIdPorDni(dni));
         Ejemplar ejemplarElegido = this.controlPersis.obtenerPrimerEjemplarDisponible(codigoLibro);
         
         ejemplarElegido.setEstado(0);
@@ -465,7 +458,63 @@ public class ControladoraLogica implements IControladora{
         showInformativeMessage("¡Prestamo creado exitosamente!", "Info", "Préstamo creado con éxito");
         return true;
     }
+    
+    /*
+    *   Este método se encarga de realizar las devoluciones. Cuando el usuario presiona el botón de devolución se envía el id       
+    *   del préstamo desde la igu hasta este punto. Se busca el prestamo que se creó con anterioridad y se setean los valores 
+    *   correspondientes.
+    */
+    @Override
+    public void RegresarPrestamo(int idPrestamo) {
+        
+        //----------------- Búsqueda del ejemplar -------------------------------
 
+        Prestamo prestamoADevolver = this.controlPersis.traerPrestamo(idPrestamo);
+        
+        //----------------- seteo del estado del prestamo ----------------------- | -> (0 = prestamo inactivo | 1 = prestamo activo)
+        
+        prestamoADevolver.setEstado(0);
+        prestamoADevolver.setFecha_devolucion_real(LocalDate.now());
+        controlPersis.editarPrestamo(prestamoADevolver);
+        
+        //---------------- seteo el estado del ejemplar ------------------------- | ->(1 = ejemplar dispoinible | 0 = ejemplar no disponible )  
+        
+        Ejemplar ejem = prestamoADevolver.getEjemplar();
+        ejem.setEstado(1);
+        controlPersis.editarEjemplar(ejem);
+        showInformativeMessage("¡Devolución exitosa!", "Info", "Devolución completada");
+    }
+    
+    /*
+    *   Este método se encarga de traer los prestamos  Activos que tenga un usuario al momento de hacer una devolución.
+    */
+    @Override
+    public List<Object[]> mostrarRegistrosDePrestamos(String dni) {
+        List<Prestamo> pres = this.controlPersis.traerPrestamosActivosDelDNI(dni);       
+        List<Object[]> datosTabla= new ArrayList<>();               
+        
+        if(pres !=null){                                             
+            for(Prestamo e: pres){
+                if(e.getEstado()==1){            
+                    
+                    String fPrestamo = (e.getFecha_prestamo() !=null) ? e.getFecha_prestamo().toString() : "N/A";
+                    String fEsperada = (e.getFecha_devolucion_esperada() !=null) ? e.getFecha_devolucion_esperada().toString() : "N/A";
+                    String fReal = (e.getFecha_devolucion_real() != null) ? e.getFecha_devolucion_real().toString() : "N/A";
+                    
+                    Object[] registros = {
+                        e.getId_prestamo(),
+                        e.getUsuario().getNombre(),
+                        e.getEjemplar().getLibro().getTitulo(),
+                        fPrestamo,
+                        fEsperada,
+                        fReal
+                    };
+                    datosTabla.add(registros);                          
+                }
+            }
+        }
+        return datosTabla;
+    }
     
     
     
@@ -508,6 +557,8 @@ public class ControladoraLogica implements IControladora{
         dialog.setAlwaysOnTop(true);
         dialog.setVisible(true);
     }
+
+
 
 
 

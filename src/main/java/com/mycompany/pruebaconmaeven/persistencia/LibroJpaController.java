@@ -197,7 +197,9 @@ public class LibroJpaController implements Serializable {
         
         try {
             Query query = em.createQuery("SELECT l.id_libro FROM Libro l WHERE l.codigo_libro = :codigoLibroRegis");
-            query.setParameter("codigoLibroRegis", codigoLibroRegis);
+            
+            int codigoLibro = Integer.parseInt(codigoLibroRegis);
+            query.setParameter("codigoLibroRegis", codigoLibro);
             idLibro = (Integer)query.getSingleResult();
         } catch (NoResultException e) {
             idLibro =null;
