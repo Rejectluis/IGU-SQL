@@ -32,6 +32,7 @@ public class GestionDePrestamos extends javax.swing.JFrame implements IRetornar,
         jLabel2.setText("jLabel2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Californian FB", 0, 36)); // NOI18N
         jLabel1.setText("Gestión de préstamos");
@@ -54,6 +55,11 @@ public class GestionDePrestamos extends javax.swing.JFrame implements IRetornar,
 
         btnVerPrestamos.setFont(new java.awt.Font("Gadugi", 0, 18)); // NOI18N
         btnVerPrestamos.setText("Ver préstamos");
+        btnVerPrestamos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerPrestamosActionPerformed(evt);
+            }
+        });
 
         btnRegistrarDevolucion.setFont(new java.awt.Font("Gadugi", 0, 18)); // NOI18N
         btnRegistrarDevolucion.setText("Devolución");
@@ -142,6 +148,11 @@ public class GestionDePrestamos extends javax.swing.JFrame implements IRetornar,
         Devolucion dev = new Devolucion(this.controller);
         mostrarYCentrarPantalla(dev);
     }//GEN-LAST:event_btnRegistrarDevolucionActionPerformed
+
+    private void btnVerPrestamosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPrestamosActionPerformed
+        VerPrestamosActivos resumenPres = new VerPrestamosActivos(this.controller);
+        mostrarYCentrarPantalla(resumenPres);
+    }//GEN-LAST:event_btnVerPrestamosActionPerformed
 
 
 

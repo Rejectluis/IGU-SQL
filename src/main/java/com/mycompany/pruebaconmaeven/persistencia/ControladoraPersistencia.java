@@ -252,6 +252,16 @@ public class ControladoraPersistencia implements IControladoraPersistencia,IPres
         return controller4.traerPrestamosActivosDelDNI(dni);
     }
 
+    @Override
+    public List<Object[]> traerResumenDePrestamosActivos() {
+        return controller4.traerResumenDePrestamosActivos();
+    }
+
+    @Override
+    public Long contarTotalPrestamoActivos() {
+        return controller4.contarTotalPrestamoActivos();
+    }
+
 
 
 

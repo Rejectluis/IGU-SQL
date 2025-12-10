@@ -201,9 +201,53 @@ public class PrestamoJpaController implements Serializable {
                 em.close();
             }
         }
-        
         return prestamosActivos;
     }
+    
+    public List<Object[]> traerResumenDePrestamosActivos (){
+        EntityManager em = getEntityManager();
+        
+        try {
+            Query query = em.createQuery(
+                "SELECT p.usuario.dni, p.usuario.nombre, p.usuario.ape_paterno, p.usuario.ape_materno, COUNT(p.id_prestamo) " + 
+                "FROM Prestamo p " +
+                "WHERE p.estado = 1 " +
+                "GROUP BY p.usuario.dni, p.usuario.nombre, p.usuario.ape_paterno, p.usuario.ape_materno"
+            );
+            query.setHint("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
+
+            return query.getResultList();
+        } finally {
+            if(em != null){
+                em.close();
+            }
+        }
+    }
+    
+    public Long contarTotalPrestamoActivos(){
+        EntityManager em = getEntityManager();
+        Long totalPrestamos = 0L;
+        
+        try {
+            Query query = em.createQuery("SELECT COUNT(DISTINCT p.usuario) FROM Prestamo p WHERE p.estado = 1");
+            
+            query.setHint("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
+            totalPrestamos = (Long)query.getSingleResult();
+        } catch (Exception e) {
+//            throw new RuntimeException("Error en la persistencia al contar préstamos activos", e);
+            System.err.println("Error al contar el total de préstamos activos: " + e.getMessage());
+            totalPrestamos = 0L;
+        }finally{
+            if (em != null){
+                em.close();
+            }
+        }
+        return totalPrestamos;
+    }
+    
+    
+    
+    
     
   
 }

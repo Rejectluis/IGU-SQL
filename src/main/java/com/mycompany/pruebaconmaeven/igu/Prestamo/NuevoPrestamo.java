@@ -42,6 +42,7 @@ public class NuevoPrestamo extends javax.swing.JFrame implements IRetornar, IRes
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Californian FB", 0, 36)); // NOI18N
         jLabel1.setText("Nuevo préstamo");

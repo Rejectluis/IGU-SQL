@@ -41,6 +41,7 @@ public class A_ColeccionLibro extends javax.swing.JFrame implements IColeccion{
         jButton5.setText("Regresar");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -76,11 +77,6 @@ public class A_ColeccionLibro extends javax.swing.JFrame implements IColeccion{
         jLabel1.setFont(new java.awt.Font("Californian FB", 0, 36)); // NOI18N
         jLabel1.setText("Googloteca");
 
-        BuscarLibro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BuscarLibroActionPerformed(evt);
-            }
-        });
         BuscarLibro.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 BuscarLibroKeyPressed(evt);
@@ -224,10 +220,6 @@ public class A_ColeccionLibro extends javax.swing.JFrame implements IColeccion{
         EliminarRegistroYRecargarPantalla();
     
     }//GEN-LAST:event_btnEliminarActionPerformed
-
-    private void BuscarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarLibroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BuscarLibroActionPerformed
 
     private void BuscarLibroKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BuscarLibroKeyPressed
         if(evt.getExtendedKeyCode() == KeyEvent.VK_E){

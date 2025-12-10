@@ -43,6 +43,7 @@ public class UsuarioNuevo extends javax.swing.JFrame implements IResetear, IReto
         jSeparator3 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel2.setFont(new java.awt.Font("Gadugi", 0, 18)); // NOI18N
         jLabel2.setText("Nombre:");
